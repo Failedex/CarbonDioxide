@@ -1,0 +1,29 @@
+
+.calwindow {
+  background-color: $base;
+  border-bottom-left-radius: $round;
+  padding: $padding;
+}
+
+calendar {
+  background-color: $base;
+  // font-size: 20px;
+  color: $white0;
+  border-radius: 20px;
+  padding: 3px;
+}
+
+calendar:selected {
+  color: $accent;
+  border-radius: $round;
+  font-weight: bold;
+}
+
+calendar.header {
+  color: $accent;
+  font-weight: bold;
+}
+
+calendar:indeterminate {
+  color: $surface2;
+}

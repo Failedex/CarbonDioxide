@@ -1,0 +1,82 @@
+
+(defwindow launcher 
+  :geometry (geometry 
+              :x "0%"
+              :y -50
+              :width 0
+              :height 0
+              :anchor "top center")
+              
+  :stacking "overlay"
+  :exclusive false
+  :monitor 0
+  :focusable true
+  :wm-ignore false
+  (barstruct))
+
+(defwidget search [] 
+  (overlay
+    (box
+      :orientation "h"
+      :space-evenly false
+      (box 
+        :width 40)
+      (revealer 
+        :reveal revealsearch
+        :transition "slideright"
+        (box 
+          :width 950)))
+    (box 
+      :orientation "h"
+      :space-evenly false
+
+      (box
+        :space-evenly false
+        :orientation "h"
+        :class "widget"
+        (eventbox
+          :onclick "./bin/launcher.sh"
+          (transform
+            :transform-origin-x "50%"
+            :transform-origin-y "50%"
+            :rotate {ricon}
+            (image 
+              :image-width 20
+              :path "./assets/void.svg")))
+        (scroll 
+          :hscroll true
+          :style "
+          transition: 500ms;
+          min-width: ${revealsearch ? 140 : 0}px;"
+          (input
+            :onchange "./scripts/apps.py --query '{}' &"
+            :onaccept "
+            ${ arraylength(appsjson.apps) > 0 ? "(cd && ${appsjson.apps[0].desktop}) & ./scripts/apps.py --increase '${appsjson.apps[0].name}' &" : ''}
+            ./bin/launcher.sh close &"
+            :hexpand true)))
+      (scroll 
+        :hscroll true 
+        :hexpand true 
+        (box
+          :orientation "h"
+          :space-evenly false
+          (for a in {appsjson.apps}
+            (app :a a)))))))
+
+(defwidget app [a]
+  (eventbox
+    ; :onclick "(cd && ${a.desktop}) & ./scripts/apps.py --increase '${a.name}' & ./bin/launcher.sh close &"
+    (box 
+      :orientation "h"
+      :space-evenly false
+      :spacing 10
+      :class "app"
+      (image 
+        :visible {a.icon != "null"}
+        :image-width 20 
+        :style "margin: -5px;"
+        :path {a.icon != "null" ? a.icon : "./assets/void.svg"})
+      (label 
+        :text {a.name}))))
+      
+        

@@ -1,0 +1,23 @@
+
+.coverpill {
+  transition: 500ms;
+  margin: $margin;
+  padding: $padding;
+  border-radius: $round;
+  background-color: $surface1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.covercirc {
+  transition: 500ms;
+  margin: - $padding;
+  margin-right: 5px;
+  padding: $padding;
+  border-radius: $round;
+  background-color: $surface1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

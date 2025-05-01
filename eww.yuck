@@ -1,0 +1,29 @@
+
+(defpoll bat0 :initial "0" :interval "30s" "bash ./scripts/sys_info.sh --bat")
+(defpoll volumemute :initial "false" :interval "1m" "pamixer --get-mute")
+(defpoll volume :initial "0" :interval "1m" "pamixer --get-volume")
+(defpoll brightness :initial "0" :interval "1m" "brightnessctl -m | awk -F, '{print substr($4, 0, length($4)-1)}' | tr -d '%'")
+
+(deflisten notifications :initial '{
+                                    "count": 0,
+                                    "dnd": false,
+                                    "notifications": [],
+                                    "popups": []}
+    '
+    "./scripts/notifcatch.py")
+
+(deflisten appsjson :initial '{"apps": []}' "./scripts/apps.py")
+
+(include "./yuck/bar.yuck")
+(include "./yuck/battery.yuck")
+(include "./yuck/clock.yuck")
+(include "./yuck/workspaces.yuck")
+(include "./yuck/notifications.yuck")
+(include "./yuck/launcher.yuck")
+(include "./yuck/barslide.yuck")
+(include "./yuck/switcher.yuck")
+(include "./yuck/media.yuck")
+(include "./yuck/timer.yuck")
+(include "./yuck/osd.yuck")
+(include "./yuck/tasklist.yuck")
+(include "./yuck/rightpopup.yuck")

@@ -1,0 +1,24 @@
+
+(defvar revealdate false)
+(defpoll thmp :initial "0" :interval "60s" "date +'%I:%M %p'")
+
+(defwidget clock [] 
+  (eventbox
+    :onclick "./scripts/hackslide.sh rightpopup &"
+    :onhover "${EWW_CMD} update revealdate=true"
+    :onhoverlost "${EWW_CMD} update revealdate=false"
+    (box 
+      :orientation "h"
+      :class "widget"
+      :space-evenly false
+      (revealer 
+        :reveal {!revealdate}
+        :transition "slideleft"
+        (label 
+          :text thmp)) 
+      (revealer 
+        :reveal revealdate
+        :transition "slideright"
+        (label 
+          :text {formattime(EWW_TIME, "%-d/%-m/%Y")})))))
+    

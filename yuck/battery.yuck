@@ -1,0 +1,13 @@
+
+(defwidget battery [] 
+  (box 
+    :class "widget"
+    :tooltip "${bat0}%"
+    (scale 
+      :orientation "h"
+      :active false 
+      :min 0 
+      :max 100 
+      :value bat0 
+      :flipped true
+      :class "batscale ${EWW_BATTERY.BAT0.status == 'Charging' ? 'charging' : ''}")))

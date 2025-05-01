@@ -1,0 +1,41 @@
+
+$round: 15px;
+$padding: 5px;
+$margin: 5px;
+
+@import "./theme.scss";
+
+* {
+  all: unset;
+  color: $white0;
+  font-family: "Roboto Nerd Font";
+  font-size: 16px;
+}
+
+.window {
+  padding: $padding; 
+  background-color: $base;
+  border-radius: $round;
+}
+
+.widget {
+  margin: $margin;
+  padding: $padding;
+  background-color: $surface0;
+  border-radius: $round;
+  &.trans {
+    background-color: transparent;
+  }
+}
+
+tooltip {
+  background-color: $base;
+  border-radius: $round;
+}
+
+@import "./scss/bar.scss";
+@import "./scss/notifications.scss";
+@import "./scss/launcher.scss";
+@import "./scss/media.scss";
+@import "./scss/timer.scss";
+@import "./scss/popups.scss";

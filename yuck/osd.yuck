@@ -1,0 +1,57 @@
+
+(defvar revealosd false)
+(defvar revealchangemode 0)
+
+(defwidget osd [] 
+  (revealer
+    :reveal revealosd 
+    :transition "slidedown"
+    :halign "center"
+    (stack
+      :selected revealchangemode
+      :transition "none"
+      (box 
+        :orientation "h"
+        :class "widget"
+        :height 40 
+        :width 270
+        :tooltip "${volume}%"
+        :space-evenly false
+        :spacing 5
+        (image 
+          :image-width 20
+          :path "./assets/icons/volume-${
+          volumemute ? 'x'
+          : volume < 10 ? '1'
+          : '2'
+          }.svg")
+        (box 
+          :class "scaleborder"
+          :hexpand true
+          (scale
+            :hexpand true
+            :class "sscale"
+            :orientation "h"
+            :active false 
+            :value {volume})))
+      (box 
+        :orientation "h"
+        :class "widget"
+        :height 40 
+        :width 270
+        :tooltip "${brightness}%"
+        :space-evenly false
+        :spacing 5
+        (image 
+          :image-width 20
+          :path "./assets/icons/sun.svg")
+        (box 
+          :class "scaleborder"
+          :hexpand true
+          (scale
+            :hexpand true
+            :class "sscale"
+            :orientation "h"
+            :active false 
+            :value {brightness}))))))
+    

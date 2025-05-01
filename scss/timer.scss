@@ -1,0 +1,21 @@
+.scaleborder {
+  border-radius: 100px;
+  border: solid 1px $surface1;
+  padding: 3px;
+  min-width: 12px;
+  min-height: 12px;
+}
+
+.sscale {
+  trough {
+    background-color: $surface2;
+    border-radius: $round;
+    min-height: 12px;
+    min-width: 80px;
+
+    highlight {
+      background-color: $accent;
+      border-radius: $round;
+    }
+  }
+}

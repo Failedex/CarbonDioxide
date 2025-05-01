@@ -1,0 +1,13 @@
+
+.app {
+  @extend .widget;
+  background-color: $base;
+  &:hover {
+    background-color: $surface0;
+  }
+}
+
+entry {
+  color: $white0;
+  margin: 0 $margin;
+}

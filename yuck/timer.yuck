@@ -1,0 +1,64 @@
+(deflisten timerjson :initial '{"display": "??", "running": false, "duration": 100}' "./scripts/timer.py")
+
+(defvar revealtimerctl false)
+
+(defwidget timer [] 
+  (eventbox 
+    :onhover "${EWW_CMD} update revealtimerctl=true"
+    :onhoverlost "${EWW_CMD} update revealtimerctl=false"
+    (box 
+      :orientation "v"
+      :space-evenly false 
+      :height 40 
+      :halign "center"
+      :width 270
+          
+      (stack 
+        :selected {revealtimerctl ? 1 : 0}
+        :transition "crossfade"
+        :same-size true
+        (box 
+          :class "widget"
+          :orientation "h"
+          :space-evenly false
+          :spacing 5
+          (label 
+            :style "margin: 0 5px;"
+            :text {timerjson.running ? timerjson.display : "--"})
+          (box 
+            :class "scaleborder"
+            :hexpand true
+            (scale
+              :hexpand true
+              :class "sscale"
+              :orientation "h"
+              :active false 
+              :value {timerjson.duration})))
+          
+        (box 
+          :orientation "h"
+          :space-evenly false 
+          :spacing 5
+          (button 
+            :class "widget"
+            :onclick "./scripts/timer.py dec 5"
+            (image
+              :image-width 20
+              :path "./assets/icons/minus.svg"))
+          (label 
+            :valign "center"
+            :text {timerjson.display})
+          (button 
+            :class "widget"
+            :onclick "./scripts/timer.py inc 5"
+            (image
+              :image-width 20
+              :path "./assets/icons/plus.svg"))
+          (box 
+            :hexpand true)
+          (button 
+            :class "widget"
+            :onclick "./scripts/timer.py toggle"
+            (label 
+              :style "margin: 0px 5px;"
+              :text {timerjson.running == "false" ? "start" : "stop"})))))))

@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+
+import subprocess
+import json
+import os
+from iconfetch import fetch
+
+eww_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
+
+proc = subprocess.Popen(["niri", "msg", "-j", "event-stream"], stdout=subprocess.PIPE, text=True)
+
+def update(var, val): 
+    subprocess.run(["eww", "-c", eww_dir, "update", f"{var}={val}"])
+
+def workspace(): 
+    global idx
+    t = subprocess.getoutput("niri msg -j workspaces")
+    data = json.loads(t)
+    output = []
+    data.sort(key=lambda x: x["id"])
+    for ws in data: 
+        if ws["output"] != "eDP-1": 
+            continue
+        output.append({"is_active": ws["is_active"], "empty": ws["active_window_id"] == None})
+        
+    for i, ws in enumerate(output):
+        if ws["is_active"]: 
+            if i != idx: 
+                idx = i
+                update("wsidx", idx)
+            break
+    print(json.dumps(output), flush=True)
+
+def window(): 
+    t = subprocess.getoutput("niri msg -j windows")
+    data = json.loads(t)
+    data.sort(key=lambda x: x["id"])
+    idx = len(data)/2
+    fwin = "false"
+    for i, win in enumerate(data): 
+        win["icon"] = fetch(win["app_id"].lower()) or fetch("unknown")
+        if win["is_focused"]:
+            idx = i
+            fwin = "true"
+
+    update("focusedwin", fwin)
+    update("winidx", idx)
+    update("windows", json.dumps(data))
+
+
+if __name__ == "__main__":
+    idx = 0
+    workspace()
+    window()
+    while True: 
+        out = proc.stdout.readline().strip()
+        data = json.loads(out)
+        if "WorkspaceActivated" in list(data.keys())[0]: 
+            workspace()
+        if "WindowFocusChanged" in list(data.keys())[0]: 
+            window()
+        if "WindowOpenedOrChanged" in list(data.keys())[0]: 
+            window()
+

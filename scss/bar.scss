@@ -1,0 +1,99 @@
+
+.barbg {
+  @extend .window; 
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: $round;
+  border-bottom-right-radius: $round;
+  margin-left: 0px;
+  margin-right: 0px;
+  transition: margin 500ms;
+  &.slideleft {
+    margin-right: 300px;
+  }
+  &.slideright {
+    margin-left: 300px;
+  }
+}
+
+.batscale {
+  all: unset;
+  trough {
+    min-width: 60px;
+    min-height: 20px;
+    border-radius: $round - $padding;
+    background-color: $surface1;
+
+    highlight {
+      background-color: $accent;
+      border-radius: $round - $padding;
+    }
+  }
+  &.charging trough highlight {
+    background-color: $green;
+  }
+}
+
+.wscirc {
+  border-radius: 100px;
+  border: solid 1px $surface1;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+.wscircinner {
+  transition: 500ms;
+  border-radius: 100px;
+  &.empty {
+    margin: 9px;
+    background-color: transparent;
+  }
+  &.focused {
+    margin: 3px;
+    background-color: $accent;
+  }
+  &.occupied {
+    margin: 3px;
+    background-color: $surface2;
+  }
+}
+
+.barslide {
+  background-color: transparent;
+  trough {
+    min-width: 300px;
+    min-height: 20px;
+    background-color: transparent;
+    slider {
+      background-color: transparent;
+      min-width: 300px;
+      min-height: 0px;
+      margin: -100px 0;
+    }
+  }
+}
+
+.fakehandle {
+  transition: 500ms;
+  border-radius: $round;
+  min-width: 200px;
+  min-height: 5px;
+  margin: 10;
+  background-color: transparent;
+  &.active {
+    background-color: $white0;
+  }
+}
+
+.fakeslide {
+  margin: $margin;
+  background-color: $surface0;
+  border-radius: $round;
+  padding: $padding;
+  .knob {
+    border-radius: $round;
+    transition: 500ms;
+    background-color: $surface2;
+  }
+}
+

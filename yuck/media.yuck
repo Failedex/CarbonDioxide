@@ -1,0 +1,66 @@
+
+(deflisten pcover "./scripts/pollcover.sh")
+(deflisten playerctl :initial '{"song": "", "artist": "", "status": "Stopped"}' "playerctl metadata --format '{\"song\": \"{{title}}\",\"artist\": \"{{artist}}\", \"status\": \"{{status}}\"}' -F")
+(defvar revealmediactl false)
+
+(defwidget mediapill [] 
+  (eventbox
+    :onhover "${EWW_CMD} update revealmediactl=true"
+    :onhoverlost "${EWW_CMD} update revealmediactl=false"
+    (box 
+      :class "widget"
+      :orientation "h"
+      :space-evenly false
+      :height 40
+      :halign "center"
+      (box 
+        :class "covercirc"
+        :visible {pcover != ""}
+        :width 30 
+        :height 20 
+        :style "background-image: url(\"${pcover ?: './assets/void.svg'}\");")
+      (box 
+        :orientation "h"
+        :space-evenly false
+        (revealer
+          :reveal {!revealmediactl}
+          :transition "slideleft"
+          (label 
+            :truncate true 
+            :style "margin: 0 5px;"
+            :text {playerctl.song ?: "..."}))
+        (revealer
+          :reveal revealmediactl
+          :transition "slideright"
+          (box
+            :orientation "h"
+            :spacing 5
+            (button 
+              :onclick "playerctl previous"
+              (image 
+                :image-width 20
+                :path "./assets/icons/skip-back.svg"))
+            (button 
+              :onclick "playerctl play-pause"
+              (image 
+                :image-width 20
+                :path "./assets/icons/${playerctl.status == 'Playing' ? 'pause' : 'play'}.svg"))
+            (button 
+              :onclick "playerctl next"
+              (image 
+                :image-width 20
+                :path "./assets/icons/skip-forward.svg"))))))))
+
+(defwidget mediapill2 [] 
+  (eventbox
+    :onhover "${EWW_CMD} update revealmediactl=true"
+    :onhoverlost "${EWW_CMD} update revealmediactl=false"
+    (box 
+      :class "coverpill"
+      :orientation "h"
+      :space-evely false 
+      :height 40
+      :halign "center"
+      :style {pcover ? "background-image: url(\"${pcover}\");" : ""})))
+      
+      

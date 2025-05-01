@@ -1,0 +1,53 @@
+
+(defwidget notification []
+  (revealer
+    :reveal {arraylength(notifications.popups) > 0 && !revealsearch}
+    :transition "slideright"
+    (notiflayout 
+      :noti {arraylength(notifications.popups) > 0 
+             ? notifications.popups[0]
+             : '{
+                 "id": -727, 
+                 "app": "",
+                 "summary": "",
+                 "body": "",
+                 "time": "07:27",
+                 "actions": [],
+                 "icon": null,
+                 "image": null, 
+                 "tleft": 0}'})))
+
+(defwidget notiflayout [noti] 
+  (button
+    :onclick "./scripts/notifmanage.sh --close ${noti.id}"
+    :tooltip "${noti.time}"
+    :hexpand true
+    (box 
+      :orientation "h"
+      :space-evenly false
+      :class "widget"
+      :width 950 
+      (box
+        :class "notifimg"
+        :visible {noti.image != "null"}
+        :width 30
+        :height 20
+        :style "
+          margin: -5px;
+          margin-right: 5px;
+          background-image: url('${
+          noti.image != "null" ? noti.image : ""
+          }');")
+      (scroll 
+        :hexpand true 
+        :hscroll true
+        (box
+          :orientation "h"
+          :space-evenly false
+          :spacing 10
+          (label
+            :truncate true
+            :markup "<b>${replace(noti.summary, '\\n', '  ')}</b>")
+          (label 
+            :truncate true
+            :markup {replace(noti.body, '\\n', '  ')}))))))

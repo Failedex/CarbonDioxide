@@ -1,0 +1,71 @@
+
+(defvar winidx 0)
+(defvar windows '[]')
+(deflisten indexarr :initial '[]' "python ./scripts/arrgen.py 20")
+
+(defwidget tasklist [] 
+  (box 
+    :orientation "h"
+    :space-evenly false 
+    :spacing 5
+    :halign "center"
+    (scroll
+      :hscroll true 
+      :hexpand true
+      :height 40
+      :width 500
+      (taskslides))))
+      
+    ; (label 
+    ;   :height 40
+    ;   :halign "start"
+    ;   :text focusedwin)))
+
+(defwidget taskslides [] 
+  (box
+    :height 40
+    :class "widget"
+    :active false
+    :halign "center"
+    :style "transition: 500ms; ${!focusedwin ? 'background-color: transparent;' : ''}"
+    (box
+      :style "
+       transition: 500ms;
+       margin-left: ${!focusedwin ? 0 : -(winidx * 30)}px;
+       margin-right: ${!focusedwin ? 0 : -((arraylength(windows) - winidx) * 30) + 30}"
+      :orientation "h"
+      :space-evenly false
+      :spacing 10
+      ; (revealer 
+      ;   :reveal {winidx == -1}
+      ;   :transition "slideright"
+      ;   (label 
+      ;     :style "margin: 0 5px;"
+      ;     :text "f@void"))
+      (for i in {indexarr} 
+        (task :i i :win {i < arraylength(windows) ? windows[i] : '{
+           "id": -1, 
+           "title": "",
+           "icon": "./assets/void.svg"
+         }'})))))
+
+(defwidget task [win i]
+  (box 
+    :visible {win.id != "-1"}
+    :orientation "h"
+    :space-evenly false 
+    (image 
+      :style "
+      transition: 500ms;
+      opacity: ${focusedwin ? -(powf(powi((winidx - i) , 2), 0.5) * 0.25) + 1 : 1};
+      "
+      :image-height 20
+      :path {win.icon})
+    (revealer 
+      :reveal {win.is_focused == true}
+      :transition "slideright"
+      (label 
+        :truncate true
+        :style "margin: 0 5px;"
+        :xalign 0
+        :text {win.title}))))

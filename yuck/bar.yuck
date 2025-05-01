@@ -1,0 +1,68 @@
+
+(deflisten ricon :initial 0 "./scripts/ricon.py")
+(defvar revealsearch false)
+; (defvar ricon 0)
+
+(defwindow bar 
+  :geometry (geometry 
+              :x "0%"
+              :y "0%"
+              :width "100%"
+              :height 0
+              :anchor "top center")
+              
+  :stacking "bottom"
+  :exclusive true
+  :monitor 0
+  :wm-ignore false
+  (barstruct))
+
+(defwidget barstruct []
+  (revealer 
+    :reveal {revealbar == 1}
+    :transition "slidedown"
+    (box
+      :class "barbg ${revealrightpopup ? 'slideleft' : '' }"
+      :orientation "h"
+      :height 50
+      :halign "center"
+      :space-evenly false
+      (search)
+      (notification)
+      (revealer 
+        :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
+        :transition "slideright"
+        (centerbox 
+          :width 950
+          (left)
+          (middle)
+          (right))))))
+
+(defwidget left [] 
+  (box 
+    :orientation "h"
+    :space-evenly false
+    :halign "start"
+    (workspace)
+    (spos)))
+
+(defwidget middle [] 
+  (box 
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    (box
+      :orientation "v"
+      :space-evenly false
+      (osd)
+      (switcher))
+    (box 
+      :width 40)))
+
+(defwidget right [] 
+  (box 
+    :orientation "h"
+    :halign "end"
+    :space-evenly false
+    (battery)
+    (clock)))
