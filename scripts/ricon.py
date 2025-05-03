@@ -69,3 +69,7 @@ if __name__ == "__main__":
             bus = dbus.SessionBus()
             remote = bus.get_object("com.Failed.RIcon", "/com/Failed/RIcon")
             remote.Set(int(a))
+        else: 
+            bus = dbus.SessionBus()
+            remote = bus.get_object("com.Failed.RIcon", "/com/Failed/RIcon")
+            remote.Set(100 + (len(a) - 1)*5)

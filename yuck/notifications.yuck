@@ -17,9 +17,12 @@
                  "image": null, 
                  "tleft": 0}'})))
 
+(defvar revealnotiactions false)
 (defwidget notiflayout [noti] 
-  (button
-    :onclick "./scripts/notifmanage.sh --close ${noti.id}"
+  (eventbox
+    ; :onclick "./scripts/notifmanage.sh --close ${noti.id}"
+    :onhover "${EWW_CMD} update revealnotiactions=true"
+    :onhoverlost "${EWW_CMD} update revealnotiactions=false"
     :tooltip "${noti.time}"
     :hexpand true
     (box 
@@ -38,16 +41,42 @@
           background-image: url('${
           noti.image != "null" ? noti.image : ""
           }');")
-      (scroll 
-        :hexpand true 
-        :hscroll true
+      (stack
+        :selected {revealnotiactions ? 1 : 0}
+        :transition "slidedown"
+        :hexpand true
+        (scroll 
+          :hexpand true 
+          :hscroll true
+          (box
+            :orientation "h"
+            :space-evenly false
+            :spacing 10
+            (label
+              :visible {noti.summary != "null"}
+              :truncate true
+              :markup "<b>${replace(noti.summary, '\\n', '  ')}</b>")
+            (label 
+              :visible {noti.body != "null"}
+              :truncate true
+              :markup {replace(noti.body, '\\n', '  ')})))
+        ;; ostrich algorithm
         (box
           :orientation "h"
-          :space-evenly false
+          :space-evenly false 
           :spacing 10
-          (label
-            :truncate true
-            :markup "<b>${replace(noti.summary, '\\n', '  ')}</b>")
-          (label 
-            :truncate true
-            :markup {replace(noti.body, '\\n', '  ')}))))))
+          :hexpand true
+          (box
+            :orientation "h"
+            :space-evenly false
+            :spacing 10
+            (for action in {noti.actions}
+              (button 
+                :onclick "./scripts/notifmanage.sh --action ${noti.id} ${action[0]} 
+                         && ./scripts/notifmanage.sh --close ${noti.id}"
+                (label 
+                  :text {action[1]}))))
+          (button 
+            :onclick "./scripts/notifmanage.sh --close ${noti.id} && ${EWW_CMD} update revealnotiactions=false"
+            (label 
+              :text "Close")))))))

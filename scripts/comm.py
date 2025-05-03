@@ -12,23 +12,35 @@ proc = subprocess.Popen(["niri", "msg", "-j", "event-stream"], stdout=subprocess
 def update(var, val): 
     subprocess.run(["eww", "-c", eww_dir, "update", f"{var}={val}"])
 
+def active_mon():
+    t = subprocess.getoutput("niri msg -j focused-output")
+    translate = {"eDP-1": 0, "DP-1": 1}
+    data = json.loads(t)
+    update("outidx", translate.get(data["name"], 0))
+
 def workspace(): 
     global idx
     t = subprocess.getoutput("niri msg -j workspaces")
     data = json.loads(t)
-    output = []
+    # Dual monitor
+    output = [[], []]
     data.sort(key=lambda x: x["id"])
+    translate = {"eDP-1": 0, "DP-1": 1}
     for ws in data: 
-        if ws["output"] != "eDP-1": 
+        if ws["output"] not in translate: 
             continue
-        output.append({"is_active": ws["is_active"], "empty": ws["active_window_id"] == None})
-        
-    for i, ws in enumerate(output):
-        if ws["is_active"]: 
-            if i != idx: 
-                idx = i
-                update("wsidx", idx)
-            break
+        t = translate[ws["output"]]
+        output[t].append({"is_active": ws["is_active"], "empty": ws["active_window_id"] == None})
+
+    active_mon()
+
+    for out in output:
+        for i, ws in enumerate(out):
+            if ws["is_active"]: 
+                if i != idx: 
+                    idx = i
+                    update("wsidx", idx)
+                break
     print(json.dumps(output), flush=True)
 
 def window(): 

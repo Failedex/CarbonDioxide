@@ -1,4 +1,5 @@
 (defvar wsidx 0)
+(defvar outidx 0)
 (deflisten workspace :initial '[]' "./scripts/comm.py")
 
 (defwidget sworkspace [] 
@@ -17,29 +18,42 @@
         :halign "start"
         (for ws in {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
           (box 
-            :visible {ws < arraylength(workspace)}
+            :visible {ws < arraylength(workspace[outidx])}
             :class "wscirc"
             (box 
               :class "wscircinner ${
-              ws >= arraylength(workspace) ?
+              ws >= arraylength(workspace[outidx]) ?
               '':
-              workspace[ws].is_active 
+              workspace[outidx][ws].is_active 
               ? 'focused' 
-              : workspace[ws].empty ? 'empty' : 'occupied'}")))))))
+              : workspace[outidx][ws].empty ? 'empty' : 'occupied'}")))))))
 
 (defwidget workspace []
+  (box 
+    :orientation "h"
+    :space-evenly false 
+    (revealer 
+      :reveal {outidx == 0}
+      :transition "slideright"
+      (workspace_ind :idx 0))
+    (revealer 
+      :reveal {outidx == 1}
+      :transition "slideleft"
+      (workspace_ind :idx 1))))
+
+(defwidget workspace_ind [idx]
   (box 
     :class "widget"
     :orientation "h"
     :spacing 5 
     (for ws in {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
       (box 
-        :visible {ws < arraylength(workspace)}
+        :visible {ws < arraylength(workspace[idx])}
         :class "wscirc"
         (box 
           :class "wscircinner ${
-          ws >= arraylength(workspace) ?
+          ws >= arraylength(workspace[idx]) ?
           '':
-          workspace[ws].is_active 
+          workspace[idx][ws].is_active 
           ? 'focused' 
-          : workspace[ws].empty ? 'empty' : 'occupied'}")))))
+          : workspace[idx][ws].empty ? 'empty' : 'occupied'}")))))

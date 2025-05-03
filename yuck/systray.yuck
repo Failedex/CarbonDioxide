@@ -1,0 +1,22 @@
+
+(defvar revealsystray false)
+(defwidget stray [] 
+  (box 
+    :orientation "h"
+    :space-evenly false
+    (button 
+      :class "widget trans"
+      :onclick "${EWW_CMD} update revealsystray=${!revealsystray}" 
+      (image 
+        :image-height 20 
+        :path "./assets/icons/chevron-${
+        revealsystray ? 'right' : 'left'
+        }.svg"))
+    (revealer
+      :reveal revealsystray
+      :transition "slideleft"
+      (box 
+        :class "widget"
+        (systray
+          :orientation "h"
+          :icon-size 20))))) 

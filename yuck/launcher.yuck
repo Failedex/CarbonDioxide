@@ -49,7 +49,7 @@
           transition: 500ms;
           min-width: ${revealsearch ? 140 : 0}px;"
           (input
-            :onchange "./scripts/apps.py --query '{}' &"
+            :onchange "./scripts/apps.py --query '{}' & ./scripts/ricon.py 'a{}' &"
             :onaccept "
             ${ arraylength(appsjson.apps) > 0 ? "(cd && ${appsjson.apps[0].desktop}) & ./scripts/apps.py --increase '${appsjson.apps[0].name}' &" : ''}
             ./bin/launcher.sh close &"

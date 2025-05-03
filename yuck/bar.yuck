@@ -22,6 +22,7 @@
     :reveal {revealbar == 1}
     :transition "slidedown"
     (box
+      ; :style "background-color: transparent;"
       :class "barbg ${revealrightpopup ? 'slideleft' : '' }"
       :orientation "h"
       :height 50
@@ -64,5 +65,6 @@
     :orientation "h"
     :halign "end"
     :space-evenly false
+    ; (stray)
     (battery)
     (clock)))

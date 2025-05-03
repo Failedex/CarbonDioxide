@@ -18,6 +18,7 @@
 (include "./yuck/battery.yuck")
 (include "./yuck/clock.yuck")
 (include "./yuck/workspaces.yuck")
+(include "./yuck/systray.yuck")
 (include "./yuck/notifications.yuck")
 (include "./yuck/launcher.yuck")
 (include "./yuck/barslide.yuck")
