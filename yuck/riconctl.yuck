@@ -1,0 +1,70 @@
+
+(defvar riconmode 0)
+(defvar speenspeed 1)
+
+(defwidget riconctl []
+  (box 
+    :orientation "h"
+    :space-evenly false
+    :halign "center"
+    (riconmode 
+      :ind 0
+      :onclick "./scripts/ricon.py mode 0"
+      :text "Normal"
+      :icon "./assets/icons/slash.svg")
+    (riconmode 
+      :ind 1 
+      :onclick "./scripts/ricon.py mode 1"
+      :text "Music"
+      :icon "./assets/icons/disc.svg"
+      :tooltip "Icon spins based on music intensity")
+    (box 
+      :class "widget ${riconmode == 2 ? '' : 'trans'}"
+      :orientation "h"
+      :space-evenly false
+      :tooltip "Icon spins at a constant rate"
+      (button 
+        :onclick "${EWW_CMD} update riconmode=2 & ./scripts/ricon.py mode 2"
+        (box
+          :orientation "h"
+          :space-evenly false 
+          (image 
+            :image-width 20
+            :path "./assets/icons/refresh-cw.svg")
+          (label
+            :style "margin: 0 5px;"
+            :text "Linear")))
+      (revealer 
+        :reveal {riconmode == 2}
+        :transition "slideright"
+        (box 
+          :orientation "h"
+          :space-evenly false
+          (button 
+            :onclick "${EWW_CMD} update speenspeed=${min(max(speenspeed - 1, 0), 100)} & ./scripts/ricon.py dec 1"
+            (image
+              :image-width 20
+              :path "./assets/icons/minus.svg"))
+          (label 
+            :style "margin: 0 5px;"
+            :text {speenspeed})
+          (button 
+            :onclick "${EWW_CMD} update speenspeed=${min(max(speenspeed + 1, 0), 100)} & ./scripts/ricon.py inc 1"
+            (image
+              :image-width 20
+              :path "./assets/icons/plus.svg")))))))
+
+(defwidget riconmode [ind icon text onclick ?tooltip]
+  (button 
+    :tooltip tooltip
+    :class "widget ${riconmode == ind ? '' : 'trans'}"
+    :onclick "${EWW_CMD} update riconmode=${ind} & ${ onclick}"
+    (box
+      :orientation "h"
+      :space-evenly false 
+      (image 
+        :image-width 20
+        :path icon)
+      (label
+        :style "margin: 0 5px;"
+        :text text))))

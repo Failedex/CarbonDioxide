@@ -3,10 +3,12 @@
   (revealer
     :reveal {arraylength(notifications.popups) > 0 && !revealsearch}
     :transition "slideright"
-    (notiflayout 
-      :noti {arraylength(notifications.popups) > 0 
-             ? notifications.popups[0]
-             : '{
+    ; (box
+    ;   :class "notiborder ${arraylength(notifications.popups) > 0 ? 'active' : 'inactive' }"
+      (notiflayout 
+        :noti {arraylength(notifications.popups) > 0 
+               ? notifications.popups[0]
+               : '{
                  "id": -727, 
                  "app": "",
                  "summary": "",

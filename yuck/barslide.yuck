@@ -5,7 +5,7 @@
   :geometry (geometry 
               :x "0%"
               :y 0
-              :width 300
+              :width 1006
               :height 20
               :anchor "top center")
               
@@ -23,6 +23,20 @@
         :reveal {revealbar == 1}
         :transition "slidedown"
         (box 
+          :height 50)))
+    (revealer 
+      :reveal {revealbar == 1}
+      :transition "slidedown"
+      :valign "start"
+      :halign "center"
+      (box 
+        :valign "start"
+        :halign "center"
+        :class "boxborder"
+        :visible {!revealrightpopup}
+        :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
+        (box 
+          :width 1000
           :height 50)))
     (eventbox
       :onhover "${EWW_CMD} update bshover=true"

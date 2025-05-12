@@ -47,9 +47,9 @@
           :hscroll true
           :style "
           transition: 500ms;
-          min-width: ${revealsearch ? 140 : 0}px;"
+          min-width: ${revealsearch ? 160 : 0}px;"
           (input
-            :onchange "./scripts/apps.py --query '{}' & ./scripts/ricon.py 'a{}' &"
+            :onchange "./scripts/apps.py --query '{}' & ./scripts/ricon.py type \"{}\" &"
             :onaccept "
             ${ arraylength(appsjson.apps) > 0 ? "(cd && ${appsjson.apps[0].desktop}) & ./scripts/apps.py --increase '${appsjson.apps[0].name}' &" : ''}
             ./bin/launcher.sh close &"

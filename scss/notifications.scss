@@ -6,3 +6,23 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+$c1: $lavender;
+$c2: $red;
+
+.boxborder {
+  background: linear-gradient(130deg, $c1, $c2);
+  border-bottom-left-radius: $round + 3px;
+  border-bottom-right-radius: $round + 3px;
+  transition: 100ms;
+}
+
+@keyframes gradanim { 
+    0%{
+      background: linear-gradient(130deg, $c1, $c2)}
+    50%{
+      background: linear-gradient(130deg, $c2, $c1)}
+    100%{
+      background: linear-gradient(130deg, $c1, $c2)}
+}
+

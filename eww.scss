@@ -23,6 +23,7 @@ $margin: 5px;
   padding: $padding;
   background-color: $surface0;
   border-radius: $round;
+  transition: background-color 500ms;
   &.trans {
     background-color: transparent;
   }
@@ -39,3 +40,4 @@ tooltip {
 @import "./scss/media.scss";
 @import "./scss/timer.scss";
 @import "./scss/popups.scss";
+@import "./scss/mmode.scss";

@@ -1,0 +1,22 @@
+
+.mmodebg {
+  background-color: $white0;
+}
+
+.vicon {
+  .center {
+    background-color: $accent;
+    min-width: 160px;
+    min-height: 160px;
+    border-radius: 50%;
+  }
+  .oside {
+    background-color: transparent;
+    box-shadow: 0px 0px 0px 80px $accent;
+    border-radius: 50%;
+  }
+  .rside {
+    background-color: $accent;
+    border-radius: 50%;
+  }
+}

@@ -18,26 +18,31 @@
   (barstruct))
 
 (defwidget barstruct []
-  (revealer 
-    :reveal {revealbar == 1}
-    :transition "slidedown"
-    (box
-      ; :style "background-color: transparent;"
-      :class "barbg ${revealrightpopup ? 'slideleft' : '' }"
-      :orientation "h"
-      :height 50
-      :halign "center"
-      :space-evenly false
-      (search)
-      (notification)
-      (revealer 
-        :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
-        :transition "slideright"
-        (centerbox 
-          :width 950
-          (left)
-          (middle)
-          (right))))))
+  ; (box
+  ;   :class "boxborder"
+  ;   :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
+    ; :halign "center"
+    (revealer 
+      :reveal {revealbar == 1}
+      :transition "slidedown"
+      (box
+        ; :style "background-color: transparent;"
+        :class "barbg ${revealrightpopup ? 'slideleft' : '' }"
+        ; :style "transition: 100ms margin; margin: ${test ? 3 : 0}px; margin-top: 0px;"
+        :orientation "h"
+        :height 50
+        :halign "center"
+        :space-evenly false
+        (search)
+        (notification)
+        (revealer 
+          :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
+          :transition "slideright"
+          (centerbox 
+            :width 950
+            (left)
+            (middle)
+            (right))))))
 
 (defwidget left [] 
   (box 
@@ -45,7 +50,8 @@
     :space-evenly false
     :halign "start"
     (workspace)
-    (spos)))
+    (spos)
+    (keepopen)))
 
 (defwidget middle [] 
   (box 
@@ -68,3 +74,8 @@
     ; (stray)
     (battery)
     (clock)))
+
+(defwidget keepopen [] 
+  (label 
+    :visible false 
+    :text "${pcover}"))

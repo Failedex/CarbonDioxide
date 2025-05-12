@@ -1,6 +1,6 @@
 (defvar wsidx 0)
 (defvar outidx 0)
-(deflisten workspace :initial '[]' "./scripts/comm.py")
+(deflisten workspace :initial '[[], []]' "./scripts/comm.py")
 
 (defwidget sworkspace [] 
   (box 
@@ -46,6 +46,7 @@
     :class "widget"
     :orientation "h"
     :spacing 5 
+    :space-evenly false
     (for ws in {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
       (box 
         :visible {ws < arraylength(workspace[idx])}

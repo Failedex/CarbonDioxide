@@ -27,12 +27,12 @@
     :class "widget"
     :active false
     :halign "center"
-    :style "transition: 500ms; ${!focusedwin ? 'background-color: transparent;' : ''}"
+    :style "transition: 500ms; ${focusedwin == 'false' ? 'background-color: transparent;' : ''}"
     (box
       :style "
        transition: 500ms;
-       margin-left: ${!focusedwin ? 0 : -(winidx * 30)}px;
-       margin-right: ${!focusedwin ? 0 : -((arraylength(windows) - winidx) * 30) + 30}"
+       margin-left: ${focusedwin == 'false' ? 0 : -(winidx * 30)}px;
+       margin-right: ${focusedwin == 'false' ? 0 : -((arraylength(windows) - winidx) * 30) + 30}"
       :orientation "h"
       :space-evenly false
       :spacing 10
@@ -57,7 +57,7 @@
     (image 
       :style "
       transition: 500ms;
-      opacity: ${focusedwin ? -(powf(powi((winidx - i) , 2), 0.5) * 0.25) + 1 : 1};
+      opacity: ${focusedwin != 'false' ? -(powf(powi((winidx - i) , 2), 0.5) * 0.25) + 1 : 1};
       "
       :image-height 20
       :path {win.icon})

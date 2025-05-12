@@ -1,13 +1,13 @@
 
 (defvar switcherind 0)
-(defvar focusedwin "")
+(defvar focusedwin "false")
 
 (defwidget switcher []
   (revealer
     :reveal {!revealosd}
     :transition "slidedown"
     (eventbox
-      :onscroll "./scripts/switcher.sh {} 3"
+      :onscroll "./scripts/switcher.sh {} 4"
       :vexpand true
       (scroll
         :width 500
@@ -33,20 +33,24 @@
           (revealer 
             :reveal {switcherind == 2}
             :transition "slidedown"
-            (timer)))))))
+            (timer))
+          (revealer 
+            :reveal {switcherind == 3}
+            :transition "slidedown"
+            (riconctl)))))))
 
 (defwidget spos [] 
   (eventbox
-    :onscroll "./scripts/switcher.sh {} 3"
-    :onclick "./scripts/switcher.sh down 3"
-    :onrightclick "./scripts/switcher.sh up 3"
+    :onscroll "./scripts/switcher.sh {} 4"
+    :onclick "./scripts/switcher.sh down 4"
+    :onrightclick "./scripts/switcher.sh up 4"
     (box 
       :class "fakeslide"
-      :width 60 
+      :width 70 
       (box
         :class "scaleborder"
         (box 
           :class "knob"
           :style "
           margin-left: ${round(30 / 3, 0) * switcherind}px;
-          margin-right: ${round(30 / 3, 0) * (2 - switcherind)}px;")))))
+          margin-right: ${round(30 / 3, 0) * (3 - switcherind)}px;")))))
