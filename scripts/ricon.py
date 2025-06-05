@@ -68,6 +68,24 @@ class RIcon(dbus.service.Object):
             print(self.rotate, flush=True)
             time.sleep(1/FPS)
 
+    def SongSpin(self): 
+        playing = [False]
+        def checkplay(playing): 
+            out = subprocess.getoutput("playerctl status").strip()
+            proc = subprocess.Popen(["playerctl", "status", "-F"], stdout=subprocess.PIPE, text=True)
+            playing[0] = out == "Playing"
+            while self.mode == 3:
+                out = proc.stdout.readline().strip()
+                playing[0] = out == "Playing"
+
+        Thread(target=checkplay, args=(playing,), daemon=True).start()
+        while self.mode == 3: 
+            if playing[0]:
+                self.rotate += 0.2
+                self.rotate %= 100
+                print(self.rotate, flush=True)
+            time.sleep(1/FPS)
+
     @dbus.service.method("com.Failed.RIcon", in_signature="i", out_signature="")
     def Set(self, r): 
         if self.mode != 0: 
@@ -87,6 +105,9 @@ class RIcon(dbus.service.Object):
             thd.start()
         elif self.mode == 2: 
             thd = Thread(target=self.LinSpin)
+            thd.start()
+        elif self.mode == 3: 
+            thd = Thread(target=self.SongSpin)
             thd.start()
 
     @dbus.service.method("com.Failed.RIcon", in_signature="i", out_signature="")

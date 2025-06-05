@@ -11,3 +11,32 @@ entry {
   color: $white0;
   margin: 0 $margin;
 }
+
+.ricon {
+  background-image: url('./assets/void.svg');
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: 500ms;
+  border-radius: 50%;
+  &.discmode {
+    min-width: 130px;
+    min-height: 130px;
+  }
+  &.normal {
+    min-width: 20px;
+    min-height: 20px;
+  }
+  .cdisc {
+    background-color: $white0;
+    border-radius: 50%;
+    transition: 500ms;
+    .ccdisc {
+      background-color: $surface1;
+      border-radius: 50%;
+      transition: 500ms;
+    }
+  }
+}
+

@@ -1,8 +1,8 @@
 
 .barbg {
   @extend .window; 
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   border-bottom-left-radius: $round;
   border-bottom-right-radius: $round;
   margin-left: 0px;
@@ -68,7 +68,7 @@
       background-color: transparent;
       min-width: 300px;
       min-height: 0px;
-      margin: -100px 0;
+      margin: -100px 0px;
     }
   }
 }
@@ -78,7 +78,7 @@
   border-radius: $round;
   min-width: 200px;
   min-height: 5px;
-  margin: 10;
+  margin: 10px;
   background-color: transparent;
   &.active {
     background-color: $white0;

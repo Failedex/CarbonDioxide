@@ -1,0 +1,10 @@
+
+(defwidget dashboard [] 
+  (box 
+    :height 160
+    :orientation "h"
+    :space-evenly false 
+    (mediadiscside)
+    (box 
+      :hexpand true)
+    (calwidget)))

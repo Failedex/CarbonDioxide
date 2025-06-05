@@ -6,11 +6,10 @@
 }
 
 calendar {
-  background-color: $base;
-  // font-size: 20px;
+  background-color: transparent;
+  font-size: 15px;
   color: $white0;
   border-radius: 20px;
-  padding: 3px;
 }
 
 calendar:selected {

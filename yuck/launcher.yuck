@@ -19,6 +19,10 @@
     (box
       :orientation "h"
       :space-evenly false
+      :style "
+      transition: 500ms; 
+      min-height: ${revealdash ? 160 : 40}px;
+      min-width: ${revealdash ? 160 : 40}px;"
       (box 
         :width 40)
       (revealer 
@@ -34,15 +38,39 @@
         :space-evenly false
         :orientation "h"
         :class "widget"
+        :style "transition: 500ms; 
+               ${revealdash ? 'border-radius: 50%; padding: 10px;' : ''}"
         (eventbox
-          :onclick "./bin/launcher.sh"
+          :onclick "./scripts/ricon.py mode ${revealdash ? 0 : 3} & ${EWW_CMD} update revealdash=${!revealdash} &"
           (transform
             :transform-origin-x "50%"
             :transform-origin-y "50%"
             :rotate {ricon}
-            (image 
-              :image-width 20
-              :path "./assets/void.svg")))
+            (box 
+              :class "ricon ${revealdash ? 'discmode' : 'normal'}"
+              :style "
+              min-height: ${revealdash ? 130 : 20}px;
+              min-width: ${revealdash ? 130 : 20}px;
+              background-image: url(\"${revealdash ? pcover : './assets/void.svg'}\");
+              "
+              (box 
+                :halign "center"
+                :valign "center"
+                :class "cdisc"
+                :style "
+                min-height: ${revealdash ? 40 : 0}px;
+                min-width: ${revealdash ? 40 : 0}px;
+                opacity: ${revealdash ? 1 : 0};
+                "
+                (box 
+                  :halign "center"
+                  :valign "center"
+                  :class "ccdisc"
+                  :style "
+                  min-height: ${revealdash ? 10 : 0}px;
+                  min-width: ${revealdash ? 10 : 0}px;
+                  opacity: ${revealdash ? 1 : 0};
+                ")))))
         (scroll 
           :hscroll true
           :style "

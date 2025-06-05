@@ -1,15 +1,16 @@
 (defvar revealbar 1)
+(defvar overview false)
 (defvar bshover false)
 
 (defwindow barslide
   :geometry (geometry 
               :x "0%"
-              :y 0
+              :y -50
               :width 1006
               :height 20
               :anchor "top center")
               
-  :stacking "bottom"
+  :stacking "bg"
   :exclusive false
   :monitor 0
   :wm-ignore false
@@ -20,12 +21,12 @@
       (box
         :height 20)
       (revealer 
-        :reveal {revealbar == 1}
+        :reveal {revealbar == 1 && !overview}
         :transition "slidedown"
         (box 
           :height 50)))
     (revealer 
-      :reveal {revealbar == 1}
+      :reveal {revealbar == 1 && !overview}
       :transition "slidedown"
       :valign "start"
       :halign "center"
@@ -33,7 +34,6 @@
         :valign "start"
         :halign "center"
         :class "boxborder"
-        :visible {!revealrightpopup}
         :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
         (box 
           :width 1000

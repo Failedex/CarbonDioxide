@@ -1,6 +1,7 @@
 
 (deflisten ricon :initial 0 "./scripts/ricon.py")
 (defvar revealsearch false)
+(defvar revealdash false)
 ; (defvar ricon 0)
 
 (defwindow bar 
@@ -23,26 +24,39 @@
   ;   :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
     ; :halign "center"
     (revealer 
-      :reveal {revealbar == 1}
+      :reveal {revealbar == 1 && !overview}
       :transition "slidedown"
       (box
         ; :style "background-color: transparent;"
-        :class "barbg ${revealrightpopup ? 'slideleft' : '' }"
+        :class "barbg"
         ; :style "transition: 100ms margin; margin: ${test ? 3 : 0}px; margin-top: 0px;"
         :orientation "h"
         :height 50
         :halign "center"
         :space-evenly false
         (search)
-        (notification)
-        (revealer 
-          :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
-          :transition "slideright"
-          (centerbox 
-            :width 950
-            (left)
-            (middle)
-            (right))))))
+        (box 
+          :orientation "h"
+          :space-evenly false
+          (notification)
+          (revealer 
+            :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
+            :transition "slideright"
+            (box
+              :orientation "v"
+              :space-evenly false
+              (revealer 
+                :reveal revealdash
+                :transition "slidedown"
+                (dashboard))
+              (revealer
+                :reveal {!revealdash}
+                :transition "slideup"
+                (centerbox 
+                  :width 950
+                  (left)
+                  (middle)
+                  (right)))))))))
 
 (defwidget left [] 
   (box 

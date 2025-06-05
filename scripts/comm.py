@@ -59,11 +59,16 @@ def window():
     update("winidx", idx)
     update("windows", json.dumps(data))
 
+def overview():
+    t = subprocess.getoutput("niri msg -j overview-state")
+    data = json.loads(t)
+    update("overview", 'true' if data["is_open"] else 'false')
 
 if __name__ == "__main__":
     idx = 0
     workspace()
     window()
+    overview()
     while True: 
         out = proc.stdout.readline().strip()
         data = json.loads(out)
@@ -73,4 +78,6 @@ if __name__ == "__main__":
             window()
         if "WindowOpenedOrChanged" in list(data.keys())[0]: 
             window()
+        if "OverviewOpenedOrClosed" in list(data.keys())[0]:
+            overview()
 

@@ -21,4 +21,35 @@
         :transition "slideright"
         (label 
           :text {formattime(EWW_TIME, "%-d/%-m/%Y")})))))
+
+(defpoll calendar_month :initial "1" :interval "20h" "date '+%m'")
+(defpoll calendar_date :initial "1" :interval "20h" "./scripts/suffixdate.sh")
+(defvar months '["nothing to see here", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"]')
     
+(defvar revealcal false)
+(defwidget calwidget []
+  (box
+    :class "widget" 
+    (eventbox
+      :onhover "${EWW_CMD} update revealcal=true"
+      :onhoverlost "${EWW_CMD} update revealcal=false"
+      (stack
+        :selected {revealcal ? 1 : 0}
+        :same-size true
+        :transition "slidedown"
+        (overlay
+          (box 
+            :class "fancydate")
+          (label 
+            :halign "center"
+            :valign "center"
+            :class "fancymonth"
+            :text {substring(months[calendar_month], 0, 3)})
+          (label 
+            :halign "center"
+            :valign "center"
+            :class "fancyday"
+            :text {calendar_date}))
+            
+        (calendar 
+          :show-heading false))))) 

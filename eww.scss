@@ -27,6 +27,9 @@ $margin: 5px;
   &.trans {
     background-color: transparent;
   }
+  &.maxr {
+    border-radius: 100px;
+  }
 }
 
 tooltip {
@@ -40,4 +43,5 @@ tooltip {
 @import "./scss/media.scss";
 @import "./scss/timer.scss";
 @import "./scss/popups.scss";
-@import "./scss/mmode.scss";
+// @import "./scss/mmode.scss";
+@import "./scss/dashboard.scss";
