@@ -5,6 +5,45 @@
     :orientation "h"
     :space-evenly false 
     (mediadiscside)
+    (switchablelog)
     (box 
       :hexpand true)
     (calwidget)))
+
+(defvar selectedlog 2)
+(defvar lognames '["wifi", "bluetooth", "notifications"]')
+
+(defwidget switchablelog [] 
+  (box 
+    :class "switchablelog"
+    :width 280
+    :orientation "h"
+    :space-evenly false
+    (box 
+      :orientation "v"
+      :space-evenly false
+      :class "side"
+      (image
+        :style "margin-top: 5px;"
+        :path "./assets/icons/bell.svg"
+        :image-width 25)
+      (box 
+        :vexpand true)
+      (logswitch))
+    (box 
+      :hexpand true
+      :class "inner"
+      (stack 
+        :selected selectedlog
+        :transition "slidedown"
+        (box)
+        (box)
+        (notiflog))))) 
+
+(defwidget logswitch []
+  (button
+    :onclick "./scripts/notifmanage.sh --toggle"
+    (box 
+      :class "toggleswitch"
+      (box 
+        :class "knob ${!notifications.dnd ? 'on' : 'off'}"))))

@@ -82,3 +82,79 @@
             :onclick "./scripts/notifmanage.sh --close ${noti.id} && ${EWW_CMD} update revealnotiactions=false"
             (label 
               :text "Close")))))))
+
+(defwidget notiflog [] 
+  (box 
+    :orientation "v"
+    :space-evenly false 
+    :hexpand true
+    :vexpand true
+    (scroll
+      :vscroll true
+      :hexpand true 
+      :vexpand true
+      (box 
+        :hexpand true
+        :orientation "v"
+        :space-evenly false
+        (for noti in {notifications.notifications}
+          (loggednoti 
+            :noti noti))))))
+
+(defwidget loggednoti [noti] 
+  (box 
+    :class "widget loggednoti"
+    :orientation "h"
+    :space-evenly false 
+    (box 
+      :width 60 
+      :height 60 
+      :vexpand false
+      :valign "start"
+      :visible {noti.image != "null"}
+      :class "image"
+      :style "background-image: url('${noti.image}')") 
+    (box 
+      :tooltip {noti.time}
+      :orientation "v"
+      :space-evenly false
+      :hexpand true
+      :style "margin-left: 5px;"
+      (box 
+        :orientation "h"
+        :space-evenly false 
+        (scroll
+          :hexpand true
+          :hscroll true
+          :vscroll false
+          (label 
+            :hexpand true 
+            :xalign 0 
+            :markup "<span weight='bold'>${noti.summary}</span>"))
+        (button 
+          :onclick "./scripts/notifmanage.sh --close ${noti.id}"
+          (image
+            :path "./assets/icons/x.svg"
+            :image-width 25)))
+      (scroll 
+        :hexpand true 
+        :hscroll true 
+        :vscroll false
+        (label 
+          :xalign 0 
+          :text {noti.body}))
+      (box 
+        :orientation "h"
+        :style "margin-top: 5px;"
+        (for action in {noti.actions}
+          (button 
+            :onclick "./scripts/notifmanage.sh --action ${noti.id} ${action[0]} && ./scripts/notifmanage.sh --close ${noti.id}"
+            :hexpand true 
+            ; :class "widget"
+            (scroll 
+              :hexpand true 
+              :hscroll true 
+              :vscroll false 
+              (label 
+                :text {action[1]}))))))))
+      

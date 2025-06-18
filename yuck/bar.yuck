@@ -92,4 +92,4 @@
 (defwidget keepopen [] 
   (label 
     :visible false 
-    :text "${pcover}"))
+    :text "${pcover} ${playerctl} ${notifications}"))

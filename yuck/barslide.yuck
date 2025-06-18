@@ -5,7 +5,7 @@
 (defwindow barslide
   :geometry (geometry 
               :x "0%"
-              :y -50
+              :y 0
               :width 1006
               :height 20
               :anchor "top center")

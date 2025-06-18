@@ -26,3 +26,12 @@ $c2: $red;
       background: linear-gradient(130deg, $c1, $c2)}
 }
 
+.loggednoti {
+  .image {
+    transition: 500ms ease;
+    border-radius: $round;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+}

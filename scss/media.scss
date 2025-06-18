@@ -34,3 +34,10 @@
   border-radius: 40px;
   padding-right: $padding;
 }
+
+.mline {
+  @extend .widget;
+  margin: 2*$margin;
+  padding: 0px;
+  background-color: $white0;
+}

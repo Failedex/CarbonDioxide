@@ -69,14 +69,15 @@
     :orientation "v"
     :space-evenly false
     :width 250
-    (box 
-      :vexpand true)
     (mlabel 
       :icon "./assets/icons/music.svg"
       :markup "${playerctl.song == '' ? 'Nothing playing' : playerctl.song}")
     (mlabel 
       :icon "./assets/icons/user.svg"
       :markup "${playerctl.artist == '' ? 'Unknown artist' : playerctl.artist}")
+    (box 
+      :class "mline"
+      :vexpand true)
     (box 
       :orientation "h"
       :space-evenly false
@@ -102,9 +103,7 @@
           :onclick "playerctl next"
           (image 
             :image-width 20
-            :path "./assets/icons/skip-forward.svg")))) 
-    (box 
-      :vexpand true)))
+            :path "./assets/icons/skip-forward.svg")))))) 
 
 
 (defwidget mlabel [icon markup]

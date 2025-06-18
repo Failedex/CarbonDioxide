@@ -24,3 +24,42 @@
   margin-left: 50px;
   text-shadow: 2px 2px $base;
 }
+
+.switchablelog {
+  background-color: $base;
+  border: solid 1px $surface0;
+  border-radius: $round;
+  margin: $margin + 1px;
+  .side {
+    background-color: $surface0;
+    border-bottom-left-radius: $round - 1px;
+    border-top-left-radius: $round - 1px;
+    padding: $padding;
+  }
+  .inner {
+    padding: $padding;
+  }
+}
+
+.toggleswitch {
+  border: solid 1px $surface1;
+  border-radius: $round;
+  margin: $margin;
+  padding: $padding;
+  .knob {
+    transition: 500ms;
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: $round - $padding;
+  }
+  .on {
+    margin-top: 0px;
+    margin-bottom: 15px;
+    background-color: $white0;
+  }
+  .off {
+    margin-bottom: 0px;
+    margin-top: 15px;
+    background-color: $surface1;
+  }
+}
