@@ -7,7 +7,6 @@
   border-bottom-right-radius: $round;
   margin-left: 0px;
   margin-right: 0px;
-  transition: margin 500ms;
   &.slideleft {
     margin-right: 300px;
   }
@@ -93,7 +92,7 @@
   .knob {
     border-radius: $round;
     transition: 500ms;
-    background-color: $surface2;
+    background-color: $white0;
   }
 }
 

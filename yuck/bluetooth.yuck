@@ -1,0 +1,42 @@
+(defpoll bluetoothstatus
+  :interval "1h" 
+  :initial "disconnected" 
+  :run-while {false}
+  "./scripts/bluetooth.sh --con_status")
+
+(defvar bluetoothjson "[]") 
+
+(defwidget bluetoothlist [] 
+  (box 
+    :orientation "v"
+    :space-evenly false 
+    :hexpand true 
+    :vexpand true 
+    (scroll 
+      :vscroll true 
+      :hexpand true 
+      :vexpand true 
+      (box 
+        :hexpand true 
+        :orientation "v"
+        :space-evenly false 
+        (for device in {bluetoothjson}
+          (bluetoothdev 
+            :dev device))))))
+
+;; I made this only show paired devices btw
+(defwidget bluetoothdev [dev]
+  (box 
+    :class "widget"
+    :orientation "h"
+    :space-evenly false
+    (box 
+      :class "connectionstat ${dev.connected}")
+    (label 
+      :hexpand true
+      :truncate true
+      :markup "${dev.name}")
+    (button 
+      :onclick "bluetoothctl ${dev.connected == 'yes' ? 'disconnect' : 'connect'} ${dev.mac}"
+      (box 
+        :class "connbutton ${dev.connected}"))))

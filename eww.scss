@@ -2,6 +2,7 @@
 $round: 15px;
 $padding: 5px;
 $margin: 5px;
+$canim: cubic-bezier(0.68, -0.6, 0.32, 1.6);
 
 @import "./theme.scss";
 
@@ -32,6 +33,11 @@ $margin: 5px;
   }
 }
 
+.cubictransition {
+  transition: 600ms;
+  transition-timing-function: $canim;
+}
+
 tooltip {
   background-color: $base;
   border-radius: $round;
@@ -45,3 +51,4 @@ tooltip {
 @import "./scss/popups.scss";
 // @import "./scss/mmode.scss";
 @import "./scss/dashboard.scss";
+@import "./scss/connection.scss";

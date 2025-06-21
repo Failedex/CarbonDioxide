@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VAL=$(eww -c ./ get switcherind)
+VAL=$(eww -c ./ get $3)
 
 if [ $1 == "up" ]; then 
     VAL=$((VAL - 1))
@@ -10,4 +10,4 @@ fi
 
 VAL=$(( VAL >= $2 ? $2-1 : VAL))
 VAL=$(( VAL < 0 ? 0 : VAL))
-eww -c ./ update switcherind=$VAL
+eww -c ./ update $3=$VAL

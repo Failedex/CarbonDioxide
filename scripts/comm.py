@@ -41,7 +41,7 @@ def workspace():
                     idx = i
                     update("wsidx", idx)
                 break
-    print(json.dumps(output), flush=True)
+    update("workspace", json.dumps(output))
 
 def window(): 
     t = subprocess.getoutput("niri msg -j windows")

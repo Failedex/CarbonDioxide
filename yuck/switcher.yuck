@@ -7,7 +7,7 @@
     :reveal {!revealosd}
     :transition "slidedown"
     (eventbox
-      :onscroll "./scripts/switcher.sh {} 4"
+      :onscroll "./scripts/switcher.sh {} 4 switcherind"
       :vexpand true
       (scroll
         :width 500
@@ -41,9 +41,9 @@
 
 (defwidget spos [] 
   (eventbox
-    :onscroll "./scripts/switcher.sh {} 4"
-    :onclick "./scripts/switcher.sh down 4"
-    :onrightclick "./scripts/switcher.sh up 4"
+    :onscroll "./scripts/switcher.sh {} 4 switcherind"
+    :onclick "./scripts/switcher.sh down 4 switcherind"
+    :onrightclick "./scripts/switcher.sh up 4 switcherind"
     (box 
       :class "fakeslide"
       :width 70 

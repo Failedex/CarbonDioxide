@@ -45,12 +45,47 @@ toggle() {
     fi  
 }
 
+# Modified to return json array
 update_eww_json() {
-    deviceNameList=$(bluetoothctl devices | awk '{print $2}')
+    macs=$(bluetoothctl devices | awk '/Device/ {print $2}')
 
     # Create json array
-    deviceNameListJson=[\"$(echo $deviceNameList | sed -e 's/ /", "/g')\"]
-    eww -c $ewwPath update bluetoothjson="$deviceNameListJson"
+    json_array="["
+    first=1
+
+    for mac in $macs; do 
+        info=$(bluetoothctl info "$mac")
+
+        # Only return paired
+        paired=$(echo "$info" | awk -F': ' '/Paired/ {print $2}')
+        if [[ "$paired" != "yes" ]]; then 
+            continue
+        fi
+
+        name=$(echo "$info" | awk -F': ' '/Name/ {print $2}')
+        connected=$(echo "$info" | awk -F': ' '/Connected/ {print $2}')
+        trusted=$(echo "$info" | awk -F': ' '/Trusted/ {print $2}')
+        name_escaped=$(echo "$name" | sed 's/"/\\"/g')
+
+        if [ $first -eq 0 ]; then 
+            json_array+=','
+        else
+            first=0
+        fi
+
+        json_array+=$(cat <<EOF
+{
+  "mac": "$mac",
+  "name": "$name_escaped",
+  "connected": "$connected",
+  "trusted": "$trusted"
+}
+EOF
+)
+    done
+
+    json_array+="]"
+    eww -c $ewwPath update bluetoothjson="$json_array"
 }
 
 # Main

@@ -19,36 +19,30 @@
       :orientation "v"
       :space-evenly false 
       (box
-        :height 20)
-      (revealer 
-        :reveal {revealbar == 1 && !overview}
-        :transition "slidedown"
-        (box 
-          :height 50)))
-    (revealer 
-      :reveal {revealbar == 1 && !overview}
-      :transition "slidedown"
-      :valign "start"
-      :halign "center"
+        :height 30)
       (box 
-        :valign "start"
-        :halign "center"
-        :class "boxborder"
-        :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
-        (box 
-          :width 1000
-          :height 50)))
+        :class "customslide"
+        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar > 1 ? 160 : 40}px; min-width: ${revealbar  > 1 ? 1126 : 1006}px;"))
+    (box 
+      :class "boxborder"
+      :style "${arraylength(notifications.popups) > 0 ? 'opacity: 1; animation: gradanim 2s linear infinite; padding: 3px;' : 'padding: 0px; opacity: 0;'} padding-top: 0px; margin-bottom: 16px;")
+
     (eventbox
       :onhover "${EWW_CMD} update bshover=true"
       :onhoverlost "${EWW_CMD} update bshover=false"
       :cursor "row-resize"
-      (scale 
-        :class "barslide"
-        :orientation "v"
-        :min 0
-        :max 2 
-        :value revealbar
-        :onchange "${EWW_CMD} update revealbar={}")) 
+      (scroll
+        :hexpand true
+        :vscroll true
+        :vexpand true
+        (scale 
+          :height 190
+          :class "barslide"
+          :orientation "v"
+          :min 0
+          :max 3
+          :value revealbar
+          :onchange "${EWW_CMD} update revealbar={} && bash -c '[ {} == 2 ] && ./scripts/ricon.py mode 3 || ./scripts/ricon.py mode 0'"))) 
     (box 
       :valign "end"
       :halign "center"

@@ -1,4 +1,3 @@
-
 (defwidget dashboard [] 
   (box 
     :height 160
@@ -6,44 +5,119 @@
     :space-evenly false 
     (mediadiscside)
     (switchablelog)
-    (box 
-      :hexpand true)
+    (sideswitchslide)
     (calwidget)))
 
 (defvar selectedlog 2)
 (defvar lognames '["wifi", "bluetooth", "notifications"]')
 
+(defwidget sideswitch [] 
+  (box 
+    :orientation "v"
+    (sideswitchbutton 
+      :icon "./assets/icons/wifi.svg"
+      :onclick "./scripts/network.sh --update_eww_json"
+      :index 0)
+    (sideswitchbutton 
+      :icon "./assets/icons/bluetooth.svg"
+      :onclick "./scripts/bluetooth.sh --update_eww_json"
+      :index 1)
+    (sideswitchbutton 
+      :icon "./assets/icons/bell.svg"
+      :index 2)))
+
+(defvar updatedashval "
+  ./scripts/bluetooth.sh --update_eww_json &
+  ./scripts/network.sh --update_eww_json &")
+
+(defwidget sideswitchslide []
+  (eventbox
+    :onscroll "./scripts/switcher.sh {} 3 selectedlog & ${updatedashval}"
+    :onclick "./scripts/switcher.sh up 3 selectedlog & ${updatedashval}"
+    :onrightclick "./scripts/switcher.sh down 3 selectedlog & ${updatedashval}"
+    :vexpand true
+    :width 30
+    (box 
+      :class "fakeslide"
+      :vexpand true
+      (box 
+        :class "scaleborder"
+        (box 
+          :class "knob"
+          :style "
+        margin-top: ${44 * selectedlog}px;
+        margin-bottom: ${44 * (2 - selectedlog)}px;
+        ")))))
+    
+
+(defwidget sideswitchbutton [icon index ?onclick]
+  (button 
+    :class "widget maxr"
+    :onclick "${EWW_CMD} update selectedlog=${index} ${onclick != '' ? '&&' + onclick : ''}"
+    (image 
+      :image-width 32
+      :path icon))) 
+
 (defwidget switchablelog [] 
   (box 
     :class "switchablelog"
-    :width 280
+    :hexpand true
     :orientation "h"
     :space-evenly false
     (box 
       :orientation "v"
       :space-evenly false
       :class "side"
-      (image
-        :style "margin-top: 5px;"
-        :path "./assets/icons/bell.svg"
-        :image-width 25)
+      (stack
+        :selected selectedlog
+        (image
+          :style "margin-top: 5px;"
+          :path "./assets/icons/wifi.svg"
+          :image-width 25)
+        (image
+          :style "margin-top: 5px;"
+          :path "./assets/icons/bluetooth.svg"
+          :image-width 25)
+        (image
+          :style "margin-top: 5px;"
+          :path "./assets/icons/bell.svg"
+          :image-width 25))
       (box 
         :vexpand true)
-      (logswitch))
+      (stack
+        :selected {selectedlog == 2 ? 0 : 1}
+        :transition "slidedown"
+        (logswitch
+          ;; stupid parinfer moment
+          :cond {!notifications.dnd} 
+          :toggle {
+                    selectedlog == 2 ? 
+                    "./scripts/notifmanage.sh --toggle" : 
+                    ''})
+        (button 
+          :style "margin: 5px;"
+          :onclick {
+                    selectedlog == 1 ? 
+                    './scripts/bluetooth.sh --update_eww_json' :
+                    './scripts/network.sh --update_eww_json'}
+          (image 
+            :image-width 22
+            :path "./assets/icons/refresh-cw.svg"))))
+          
     (box 
       :hexpand true
       :class "inner"
       (stack 
         :selected selectedlog
         :transition "slidedown"
-        (box)
-        (box)
-        (notiflog))))) 
+        (wifilist)
+        (bluetoothlist)
+        (notiflog)))))
 
-(defwidget logswitch []
+(defwidget logswitch [cond toggle]
   (button
-    :onclick "./scripts/notifmanage.sh --toggle"
+    :onclick toggle
     (box 
       :class "toggleswitch"
       (box 
-        :class "knob ${!notifications.dnd ? 'on' : 'off'}"))))
+        :class "knob ${cond ? 'on' : 'off'}"))))

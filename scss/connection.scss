@@ -1,0 +1,43 @@
+
+.connectionstat {
+  margin: $margin;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 50%;
+  transition: 500ms;
+  &.yes {
+    background-color: $green; 
+  }
+  &.no {
+    background-color: $red; 
+  }
+  &.blank {
+    background-color: $surface2;
+  }
+}
+
+.connbutton {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: 500ms;
+  margin: $margin;
+  min-width: 20px;
+  min-height: 20px;
+  &.no {
+    background-image: url('./assets/icons/check.svg');
+  }
+  &.yes {
+    background-image: url('./assets/icons/x.svg');
+  }
+}
+
+.nwbar {
+  min-width: 4px;
+  &.active {
+    background-color: $white0;
+  }
+  &.inactive {
+    background-color: $surface2;
+  }
+}

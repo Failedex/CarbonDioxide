@@ -1,7 +1,6 @@
 
 (deflisten ricon :initial 0 "./scripts/ricon.py")
 (defvar revealsearch false)
-(defvar revealdash false)
 ; (defvar ricon 0)
 
 (defwindow bar 
@@ -23,21 +22,23 @@
   ;   :class "boxborder"
   ;   :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
     ; :halign "center"
-    (revealer 
-      :reveal {revealbar == 1 && !overview}
-      :transition "slidedown"
-      (box
-        ; :style "background-color: transparent;"
-        :class "barbg"
-        ; :style "transition: 100ms margin; margin: ${test ? 3 : 0}px; margin-top: 0px;"
-        :orientation "h"
-        :height 50
-        :halign "center"
-        :space-evenly false
-        (search)
+    ; (revealer 
+    ;   :reveal {revealbar == 1 && !overview}
+    ;   :transition "slidedown"
+    (box
+      :class "barbg customslide"
+      :orientation "h"
+      :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar > 1 ? 160 : 40}px"
+      :halign "center"
+      :space-evenly false
+      (scroll
+        :vscroll true
+        :hscroll false
+        :hexpand true
         (box 
           :orientation "h"
           :space-evenly false
+          (search)
           (notification)
           (revealer 
             :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
@@ -45,14 +46,13 @@
             (box
               :orientation "v"
               :space-evenly false
-              (revealer 
-                :reveal revealdash
-                :transition "slidedown"
-                (dashboard))
-              (revealer
-                :reveal {!revealdash}
-                :transition "slideup"
+              :width 950
+              (stack 
+                :selected {revealbar > 1 ? 0 : 1}
+                :transition "slideright"
+                (dashboard)
                 (centerbox 
+                  :valign "start"
                   :width 950
                   (left)
                   (middle)

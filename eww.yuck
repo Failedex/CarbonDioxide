@@ -31,3 +31,5 @@
 (include "./yuck/riconctl.yuck")
 ; (include "./yuck/mmode.yuck")
 (include "./yuck/dashboard.yuck")
+(include "./yuck/bluetooth.yuck")
+(include "./yuck/wifi.yuck")

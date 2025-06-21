@@ -31,11 +31,18 @@ toggle() {
     fi
 }
 
+# eeeehh lazy...
 update_eww_json() {
-    ssidList=$(
-nmcli -t -f SSID,SIGNAL dev wifi | awk -F: 'NF>=2 {printf "{\"ssid\": \"%s\", \"signal\": %s}\n", $1, $2}' | jq -s .
-) 
-    eww -c $ewwPath update networksjson="$deviceNameListJson"
+    ssidList=$(nmcli -t -f SSID,SIGNAL,IN-USE dev wifi | awk -F: '
+NF>=2 {
+  ssid = $1
+  signal = $2
+  connected = ($3 == "*") ? "true" : "false"
+  gsub(/"/, "\\\"", ssid)
+  printf("{\"ssid\":\"%s\",\"signal\":%s,\"connected\":%s}\n", ssid, signal, connected)
+}' | jq -s 'sort_by(.signal) | reverse') 
+
+    eww -c $ewwPath update wifijson="$ssidList"
 }
 
 # Main

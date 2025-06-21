@@ -1,0 +1,50 @@
+(defpoll wifistatus
+  :interval "1h" 
+  :initial "disconnected" 
+  :run-while {selectedlog == 0 && revealbar > 1}
+  "./scripts/network.sh --con_status")
+
+(defvar wifijson "[]") 
+
+(defwidget wifilist [] 
+  (box 
+    :orientation "v"
+    :space-evenly false 
+    :hexpand true 
+    :vexpand true 
+    (scroll 
+      :vscroll true 
+      :hexpand true 
+      :vexpand true 
+      (box 
+        :hexpand true 
+        :orientation "v"
+        :space-evenly false 
+        (for network in {wifijson}
+          (networkcon
+            :network network))))))
+
+(defwidget networkcon [network]
+  (box 
+    :class "widget"
+    :tooltip "${network.signal}%"
+    :orientation "h"
+    :space-evenly false
+    (nwicon :strength {network.signal})
+    (label 
+      :hexpand true 
+      :truncate true
+      :text {network.ssid})
+    (button 
+      :onclick "nmcli con ${network.connected ? 'down' : 'up'} ${network.ssid}"
+      (box 
+        :class "connbutton ${network.connected ? 'yes' : 'no'}"))))
+
+(defwidget nwicon [strength]
+  (overlay 
+    (box 
+      :class "connectionstat blank")
+    (box 
+      :style "opacity: ${strength / 100};"
+      :class "connectionstat no")))
+

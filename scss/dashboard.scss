@@ -1,3 +1,7 @@
+.customslide {
+  transition: 0.6s;
+  transition-timing-function: $canim;
+}
 
 .fancydate {
   background-image: url("./assets/flowerbw.png");

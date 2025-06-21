@@ -8,9 +8,28 @@ from gi.repository import GLib
 from threading import Thread
 import subprocess
 import json
+import math
 
 FPS = 30
-DX = lambda t: 1 - (1-t)*(1-t)
+
+# experimentation with functions lol
+def ease_in_out_back(t): 
+    c1 = 1.70158
+    c2 = c1 * 1.525
+
+    if t < 0.5: 
+        return (math.pow(2*t, 2) * ((c2 + 1) * 2 * t - c2)) / 2
+    else:
+        return (math.pow(2*t - 2, 2) * ((c2 + 1) * (t * 2 - 2) + c2) + 2) / 2
+
+def ease_out_back(t):
+    c1 = 1.70158
+    c3 = c1 + 1
+
+    return 1+c3*math.pow(t-1, 3) + c1*math.pow(t-1, 2)
+
+DX = ease_out_back
+# DX = lambda t: 1 - (1-t)*(1-t)
 DURATION = 1
 
 class RIcon(dbus.service.Object):

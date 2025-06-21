@@ -29,8 +29,8 @@
     :halign "center"
     :style "transition: 500ms; ${focusedwin == 'false' ? 'background-color: transparent;' : ''}"
     (box
+      :class "cubictransition"
       :style "
-       transition: 500ms;
        margin-left: ${focusedwin == 'false' ? 0 : -(winidx * 30)}px;
        margin-right: ${focusedwin == 'false' ? 0 : -((arraylength(windows) - winidx) * 30) + 30}px"
       :orientation "h"
