@@ -42,19 +42,25 @@
       (workspace_ind :idx 1))))
 
 (defwidget workspace_ind [idx]
-  (box 
-    :class "widget"
-    :orientation "h"
-    :spacing 5 
-    :space-evenly false
-    (for ws in {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
-      (box 
-        :visible {ws < arraylength(workspace[idx])}
-        :class "wscirc"
-        (box 
-          :class "wscircinner ${
+  (scroll
+    :class "cubictransition"
+    :style "min-width: ${arraylength(workspace[idx]) * 25 + 10}px;"
+    (box 
+      :class "widget"
+      (box
+        :class "cubictransition"
+        :style "margin-right: -${(10 - arraylength(workspace[idx])) * 25}px;"
+        :orientation "h"
+        :spacing 5 
+        :space-evenly false
+        (for ws in {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+          (box 
+            :class "wscirc"
+            :style "opacity: ${ws < arraylength(workspace[idx]) ? 1 : 0};"
+            (box 
+              :class "wscircinner ${
           ws >= arraylength(workspace[idx]) ?
           '':
           workspace[idx][ws].is_active 
           ? 'focused' 
-          : workspace[idx][ws].empty ? 'empty' : 'occupied'}")))))
+          : workspace[idx][ws].empty ? 'empty' : 'occupied'}")))))))

@@ -2,82 +2,146 @@
 
 import subprocess
 import json
-import os
+import socket
+import os 
 from iconfetch import fetch
 
 eww_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), ".."))
 
-proc = subprocess.Popen(["niri", "msg", "-j", "event-stream"], stdout=subprocess.PIPE, text=True)
+class NiriComm: 
+    def __init__(self, client): 
+        self.client = client
+        self.fwsid = 0
+        self.fwinid = 0
+        self.windows = {}
+        self.workspaces = {}
 
-def update(var, val): 
-    subprocess.run(["eww", "-c", eww_dir, "update", f"{var}={val}"])
+    def setup(self):
+        client.sendall('"Windows"\n'.encode())
+        data = client.recv(1024)
+        data = json.loads(data.decode())["Ok"]["Windows"]
+        
+        for win in data:
+            if win["is_focused"]:
+                self.fwinid = win["id"]
+            self.windows[win['id']] = win
 
-def active_mon():
-    t = subprocess.getoutput("niri msg -j focused-output")
-    translate = {"eDP-1": 0, "DP-1": 1}
-    data = json.loads(t)
-    update("outidx", translate.get(data["name"], 0))
+        client.sendall('"Workspaces"\n'.encode())
+        data = client.recv(1024)
+        data = json.loads(data.decode())["Ok"]["Workspaces"]
+        
+        for ws in data:
+            if ws["is_focused"]:
+                self.fwsid = ws["id"]
+            self.workspaces[ws['id']] = ws
 
-def workspace(): 
-    global idx
-    t = subprocess.getoutput("niri msg -j workspaces")
-    data = json.loads(t)
-    # Dual monitor
-    output = [[], []]
-    data.sort(key=lambda x: x["id"])
-    translate = {"eDP-1": 0, "DP-1": 1}
-    for ws in data: 
-        if ws["output"] not in translate: 
-            continue
-        t = translate[ws["output"]]
-        output[t].append({"is_active": ws["is_active"], "empty": ws["active_window_id"] == None})
+        self.update_workspace()
+        self.update_window()
 
-    active_mon()
-
-    for out in output:
-        for i, ws in enumerate(out):
-            if ws["is_active"]: 
-                if i != idx: 
-                    idx = i
-                    update("wsidx", idx)
+        client.sendall('"EventStream"\n'.encode())
+        while True: 
+            data = client.recv(1024)
+            if not data: 
                 break
-    update("workspace", json.dumps(output))
+            
+            data = data.decode()
+            for line in data.split('\n'):
+                line = line.strip()
+                if line == '':
+                    continue
+                try:
+                    d = json.loads(line)
+                except:
+                    continue
+                
+                if "WindowFocusChanged" in d: 
+                    fid = d["WindowFocusChanged"]["id"]
+                    if self.fwinid in self.windows:
+                        self.windows[self.fwinid]["is_focused"] = False
+                    if fid in self.windows:
+                        self.windows[fid]["is_focused"] = True
+                    self.fwinid = fid
+                    self.update_window()
 
-def window(): 
-    t = subprocess.getoutput("niri msg -j windows")
-    data = json.loads(t)
-    data.sort(key=lambda x: x["id"])
-    idx = len(data)/2
-    fwin = "false"
-    for i, win in enumerate(data): 
-        win["icon"] = fetch(win["app_id"].lower()) or fetch("unknown")
-        if win["is_focused"]:
-            idx = i
-            fwin = "true"
+                if "WindowOpenedOrChanged" in d:
+                    window = d["WindowOpenedOrChanged"]["window"]
+                    self.windows[window["id"]] = window
+                    if window["is_focused"]:
+                        if self.fwinid in self.windows:
+                            self.windows[self.fwinid]["is_focused"] = False
+                        self.fwinid = window["id"]
+                        # This is usually called twice so when it sees it for a second time it toggles it to false lmao
+                        self.windows[self.fwinid]["is_focused"] = True
+                    self.update_window()
 
-    update("focusedwin", fwin)
-    update("winidx", idx)
-    update("windows", json.dumps(data))
+                if "WindowClosed" in d:
+                    fid = d["WindowClosed"]["id"]
+                    del self.windows[fid]
+                    self.update_window()
 
-def overview():
-    t = subprocess.getoutput("niri msg -j overview-state")
-    data = json.loads(t)
-    update("overview", 'true' if data["is_open"] else 'false')
+                if "OverviewOpenedOrClosed" in d:
+                    ow = d["OverviewOpenedOrClosed"]["is_open"]
+                    self.update("overview", json.dumps(ow))
+
+                if "WorkspaceActivated" in d:
+                    fid = d["WorkspaceActivated"]["id"] 
+                    self.workspaces[self.fwsid]["is_focused"] = False
+                    self.workspaces[fid]["is_focused"] = True
+                    self.fwsid = fid
+                    self.update_workspace()
+
+                if "WorkspacesChanged" in d: 
+                    self.workspaces = {}
+                    for ws in d["WorkspacesChanged"]["workspaces"]:
+                        if ws["is_focused"]:
+                            self.fwsid = ws["id"]
+                        self.workspaces[ws['id']] = ws
+                    self.update_workspace()
+
+    def update_window(self): 
+        wins = list(self.windows.values())
+        wins.sort(key=lambda x: x["id"])
+        idx = len(wins)/2
+        fwin = "false"
+        for i, win in enumerate(wins): 
+            win["icon"] = fetch(win["app_id"].lower()) or fetch("unknown")
+            if win["is_focused"]:
+                idx = i
+                fwin = "true"
+
+        self.update("focusedwin", fwin)
+        self.update("winidx", idx)
+        self.update("windows", json.dumps(wins))
+
+    def update_workspace(self):
+        wss = list(self.workspaces.values())
+        wss.sort(key=lambda x: x["id"])
+        output = [[], []]
+        translate = {"eDP-1": 0, "DP-1": 1}
+        active_mon = 0
+        for ws in wss:
+            if ws["output"] not in translate:
+                continue
+            t = translate[ws["output"]]
+            if ws["is_focused"]:
+                active_mon = t
+            output[t].append({"is_active": ws["is_focused"], "empty": ws["active_window_id"] == None})
+        self.update("outidx", active_mon)
+
+        for out in output:
+            for i, ws in enumerate(out):
+                if ws["is_active"]:
+                    self.update("wsidx", i)
+                    break
+        self.update("workspace", json.dumps(output))
+
+    def update(self, var, val): 
+        subprocess.run(["eww", "-c", eww_dir, "update", f"{var}={val}"])
 
 if __name__ == "__main__":
-    idx = 0
-    workspace()
-    window()
-    overview()
-    while True: 
-        out = proc.stdout.readline().strip()
-        data = json.loads(out)
-        if "WorkspaceActivated" in list(data.keys())[0]: 
-            workspace()
-        if "WindowFocusChanged" in list(data.keys())[0]: 
-            window()
-        if "WindowOpenedOrChanged" in list(data.keys())[0]: 
-            window()
-        if "OverviewOpenedOrClosed" in list(data.keys())[0]:
-            overview()
+    sock = os.getenv("NIRI_SOCKET")
+    assert type(sock) == str
 
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+        client.connect(sock)
+        NiriComm(client).setup()
