@@ -1,7 +1,7 @@
 
 (defwidget notification []
   (revealer
-    :reveal {arraylength(notifications.popups) > 0 && !revealsearch}
+    :reveal {arraylength(notifications.popups) > 0 && !revealsearch && revealbar <= 1}
     :transition "slideright"
     ; (box
     ;   :class "notiborder ${arraylength(notifications.popups) > 0 ? 'active' : 'inactive' }"

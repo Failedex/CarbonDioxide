@@ -75,7 +75,7 @@
         (scroll 
           :hscroll true
           :style "
-          transition: 500ms;
+          transition: 600ms;
           min-width: ${revealsearch ? 160 : 0}px;"
           (input
             :onchange "./scripts/apps.py --query '{}' & ./scripts/ricon.py type \"{}\" &"
@@ -86,7 +86,7 @@
       (scroll 
         :hscroll true 
         :hexpand true 
-        :style "transition: 500ms; opacity: ${revealsearch ? 1 : 0};"
+        :style "transition: 600ms; opacity: ${revealsearch ? 1 : 0};"
         (box
           :orientation "h"
           :space-evenly false

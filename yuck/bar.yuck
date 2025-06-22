@@ -41,7 +41,7 @@
           (search)
           (notification)
           (revealer 
-            :reveal {arraylength(notifications.popups) == 0 && !revealsearch}
+            :reveal {(arraylength(notifications.popups) == 0 && !revealsearch) || revealbar > 1}
             :transition "slideright"
             (box
               :orientation "v"
