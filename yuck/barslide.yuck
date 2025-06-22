@@ -1,49 +1,19 @@
-(defvar revealbar 1)
-(defvar overview false)
-(defvar bshover false)
 
 (defwindow barslide
   :geometry (geometry 
               :x "0%"
               :y 0
               :width 1006
-              :height 20
+              :height 0
               :anchor "top center")
               
-  :stacking "bg"
-  :exclusive false
+  :stacking "bottom"
+  :exclusive true
   :monitor 0
   :wm-ignore false
-  (overlay
-    (box
-      :orientation "v"
-      :space-evenly false 
-      (box
-        :height 30)
-      (box 
-        :class "customslide"
-        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar > 1 ? 160 : 40}px; min-width: ${revealbar  > 1 ? 1126 : 1006}px;"))
+  (box
+    :orientation "v"
+    :space-evenly false 
     (box 
-      :class "boxborder"
-      :style "${arraylength(notifications.popups) > 0 ? 'opacity: 1; animation: gradanim 2s linear infinite; padding: 3px;' : 'padding: 0px; opacity: 0;'} padding-top: 0px; margin-bottom: 16px;")
-
-    (eventbox
-      :onhover "${EWW_CMD} update bshover=true"
-      :onhoverlost "${EWW_CMD} update bshover=false"
-      :cursor "row-resize"
-      (scroll
-        :hexpand true
-        :vscroll true
-        :vexpand true
-        (scale 
-          :height 190
-          :class "barslide"
-          :orientation "v"
-          :min 0
-          :max 3
-          :value revealbar
-          :onchange "${EWW_CMD} update revealbar={} && bash -c '[ {} == 2 ] && ./scripts/ricon.py mode 3 || ./scripts/ricon.py mode 0'"))) 
-    (box 
-      :valign "end"
-      :halign "center"
-      :class "fakehandle ${bshover ? 'active' : '' }")))
+      :class "customslide"
+      :style "min-height: ${revealbar == 0 || overview ? 10 : 50}px; min-width: ${revealbar  > 1 ? 1126 : 1006}px;")))

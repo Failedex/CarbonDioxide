@@ -21,8 +21,8 @@
       :space-evenly false
       :class "cubictransition"
       :style "
-      min-height: ${revealbar > 1 ? 160 : 40}px;
-      min-width: ${revealbar > 1 ? 160 : 40}px;"
+      min-height: ${revealbar == 2 ? 160 : 40}px;
+      min-width: ${revealbar == 2 ? 160 : 40}px;"
       (box 
         :width 40)
       (revealer 
@@ -40,37 +40,37 @@
         :class "widget"
         :valign "start"
         :style "transition: 600ms; 
-               ${revealbar > 1 ? 'border-radius: 50%; padding: 10px;' : ''}"
+               ${revealbar == 2 ? 'border-radius: 50%; padding: 10px;' : ''}"
         (eventbox
-          :onclick "./scripts/ricon.py mode ${revealbar > 1 ? 0 : 3} & ${EWW_CMD} update revealbar=${revealbar == 1 ? 2 : 1} &"
+          :onclick "./scripts/ricon.py mode ${revealbar == 2 ? 0 : 3} & ${EWW_CMD} update revealbar=${revealbar == 1 ? 2 : 1} &"
           (transform
             :transform-origin-x "50%"
             :transform-origin-y "50%"
             :rotate {ricon}
             (box 
-              :class "ricon ${revealbar > 1 ? 'discmode' : 'normal'}"
+              :class "ricon ${revealbar == 2 ? 'discmode' : 'normal'}"
               :style "
-              min-height: ${revealbar > 1 ? 130 : 20}px;
-              min-width: ${revealbar > 1 ? 130 : 20}px;
-              background-image: url(\"${revealbar > 1 ? pcover : './assets/void.svg'}\");
+              min-height: ${revealbar == 2 ? 130 : 20}px;
+              min-width: ${revealbar == 2 ? 130 : 20}px;
+              background-image: url(\"${revealbar == 2 ? pcover : './assets/void.svg'}\");
               "
               (box 
                 :halign "center"
                 :valign "center"
                 :class "cdisc"
                 :style "
-                min-height: ${revealbar > 1 ? 40 : 0}px;
-                min-width: ${revealbar > 1 ? 40 : 0}px;
-                opacity: ${revealbar > 1 ? 1 : 0};
+                min-height: ${revealbar == 2 ? 40 : 0}px;
+                min-width: ${revealbar == 2 ? 40 : 0}px;
+                opacity: ${revealbar == 2 ? 1 : 0};
                 "
                 (box 
                   :halign "center"
                   :valign "center"
                   :class "ccdisc"
                   :style "
-                  min-height: ${revealbar > 1 ? 10 : 0}px;
-                  min-width: ${revealbar > 1 ? 10 : 0}px;
-                  opacity: ${revealbar > 1 ? 1 : 0};
+                  min-height: ${revealbar == 2 ? 10 : 0}px;
+                  min-width: ${revealbar == 2 ? 10 : 0}px;
+                  opacity: ${revealbar == 2 ? 1 : 0};
                 ")))))
         (scroll 
           :hscroll true

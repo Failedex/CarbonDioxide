@@ -11,7 +11,7 @@ $c1: $lavender;
 $c2: $red;
 
 .boxborder {
-  background: linear-gradient(130deg, $c1, $c2);
+  background: $surface1;
   border-bottom-left-radius: $round + 3px;
   border-bottom-right-radius: $round + 3px;
   transition: 100ms;

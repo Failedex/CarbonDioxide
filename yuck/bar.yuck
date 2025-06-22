@@ -1,7 +1,9 @@
 
 (deflisten ricon :initial 0 "./scripts/ricon.py")
 (defvar revealsearch false)
-; (defvar ricon 0)
+(defvar revealbar 1)
+(defvar overview false)
+(defvar bshover false)
 
 (defwindow bar 
   :geometry (geometry 
@@ -11,24 +13,56 @@
               :height 0
               :anchor "top center")
               
-  :stacking "bottom"
-  :exclusive true
+  :stacking "fg"
+  :exclusive false
+  :focusable false
   :monitor 0
   :wm-ignore false
-  (barstruct))
+  (slideextend))
+
+(defwidget slideextend [] 
+  (overlay 
+    (box
+      :orientation "v"
+      :space-evenly false 
+      (box
+        :height 30)
+      (box 
+        :class "customslide"
+        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : 40}px; min-width: ${revealbar  > 1 ? 1126 : 1006}px;"))
+    (eventbox
+      :onhover "${EWW_CMD} update bshover=true"
+      :onhoverlost "${EWW_CMD} update bshover=false"
+      :cursor "row-resize"
+      (scroll
+        :hexpand true
+        :vscroll true
+        :vexpand true
+        (scale 
+          :height 190
+          :class "barslide"
+          :orientation "v"
+          :min 0
+          :max 3
+          :value revealbar
+          :onchange "${EWW_CMD} update revealbar={} && bash -c '[ {} == 2 ] && ./scripts/ricon.py mode 3 || ./scripts/ricon.py mode 0'"))) 
+    (box 
+      :valign "end"
+      :halign "center"
+      :class "fakehandle ${bshover ? 'active' : '' }")
+    (barstruct)))
+    
 
 (defwidget barstruct []
-  ; (box
-  ;   :class "boxborder"
-  ;   :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : "padding: 0px; padding-top: 0px;"}
-    ; :halign "center"
-    ; (revealer 
-    ;   :reveal {revealbar == 1 && !overview}
-    ;   :transition "slidedown"
+  (box
+    :class "boxborder"
+    :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : revealbar == 2 ? "padding: 1px; padding-top: 0px; border-radius: 16px;" : "padding: 0px; padding-top: 0px;"}
+    :halign "center"
+    :valign "start"
     (box
       :class "barbg customslide"
       :orientation "h"
-      :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar > 1 ? 160 : 40}px"
+      :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : 40}px"
       :halign "center"
       :space-evenly false
       (scroll
@@ -41,14 +75,14 @@
           (search)
           (notification)
           (revealer 
-            :reveal {(arraylength(notifications.popups) == 0 && !revealsearch) || revealbar > 1}
+            :reveal {(arraylength(notifications.popups) == 0 && !revealsearch) || revealbar == 2}
             :transition "slideright"
             (box
               :orientation "v"
               :space-evenly false
               :width 950
               (stack 
-                :selected {revealbar > 1 ? 0 : 1}
+                :selected {revealbar == 2 ? 0 : 1}
                 :transition "slideright"
                 (dashboard)
                 (centerbox 
@@ -56,7 +90,7 @@
                   :width 950
                   (left)
                   (middle)
-                  (right)))))))))
+                  (right))))))))))
 
 (defwidget left [] 
   (box 
@@ -64,8 +98,8 @@
     :space-evenly false
     :halign "start"
     (workspace)
-    (spos)
-    (keepopen)))
+    (spos)))
+    ; (keepopen)))
 
 (defwidget middle [] 
   (box 

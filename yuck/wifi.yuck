@@ -1,7 +1,7 @@
 (defpoll wifistatus
   :interval "1h" 
   :initial "disconnected" 
-  :run-while {selectedlog == 0 && revealbar > 1}
+  :run-while {selectedlog == 0 && revealbar == 2}
   "./scripts/network.sh --con_status")
 
 (defvar wifijson "[]") 
