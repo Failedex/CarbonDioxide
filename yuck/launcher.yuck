@@ -12,7 +12,24 @@
   :monitor 0
   :focusable true
   :wm-ignore false
-  (barstruct))
+  (minbarstruct))
+
+(defwidget minbarstruct [] 
+  (box
+    :class "barbg customslide"
+    :orientation "h"
+    :halign "center"
+    :space-evenly false
+    (search)
+    (revealer 
+      :reveal {(arraylength(notifications.popups) == 0 && !revealsearch) || revealbar == 2}
+      :transition "slideright"
+      (centerbox 
+        :valign "start"
+        :width 950
+        (left)
+        (middle)
+        (right)))))
 
 (defwidget search [] 
   (overlay

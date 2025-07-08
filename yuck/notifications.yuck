@@ -84,22 +84,26 @@
               :text "Close")))))))
 
 (defwidget notiflog [] 
-  (box 
-    :orientation "v"
-    :space-evenly false 
-    :hexpand true
-    :vexpand true
-    (scroll
-      :vscroll true
-      :hexpand true 
+  (overlay
+    (box 
+      :orientation "v"
+      :space-evenly false 
+      :hexpand true
       :vexpand true
-      (box 
-        :hexpand true
-        :orientation "v"
-        :space-evenly false
-        (for noti in {notifications.notifications}
-          (loggednoti 
-            :noti noti))))))
+      (scroll
+        :vscroll true
+        :hexpand true 
+        :vexpand true
+        (box 
+          :hexpand true
+          :orientation "v"
+          :space-evenly false
+          (for noti in {notifications.notifications}
+            (loggednoti 
+              :noti noti)))))
+    (label 
+      :style "transition: 500ms; opacity: ${arraylength(notifications.notifications) == 0 ? 1 : 0};"
+      :text "No notifications.")))
 
 (defwidget loggednoti [noti] 
   (box 

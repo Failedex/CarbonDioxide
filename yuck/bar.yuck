@@ -9,7 +9,7 @@
   :geometry (geometry 
               :x "0%"
               :y "0%"
-              :width "100%"
+              :width 1000
               :height 0
               :anchor "top center")
               
@@ -29,7 +29,7 @@
         :height 30)
       (box 
         :class "customslide"
-        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : 40}px; min-width: ${revealbar  > 1 ? 1126 : 1006}px;"))
+        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : revealbar == 3 ? 864 : 40}px; min-width: ${revealbar == 2 ? 1126 : revealbar == 3 ? 1536 : 1006}px;"))
     (eventbox
       :onhover "${EWW_CMD} update bshover=true"
       :onhoverlost "${EWW_CMD} update bshover=false"
@@ -39,7 +39,7 @@
         :vscroll true
         :vexpand true
         (scale 
-          :height 190
+          :height 200
           :class "barslide"
           :orientation "v"
           :min 0
@@ -50,8 +50,16 @@
       :valign "end"
       :halign "center"
       :class "fakehandle ${bshover ? 'active' : '' }")
+    ; (stack
+    ;   :transition "crossfade"
+    ;   :selected {revealbar == 3 ? 1 : 0}
+    ;   :valign "start"
     (barstruct)))
-    
+      ; (box 
+      ;   :width 1536
+      ;   :height 864
+      ;   :vexpand true
+      ;   :class "widget"))))
 
 (defwidget barstruct []
   (box
@@ -77,20 +85,17 @@
           (revealer 
             :reveal {(arraylength(notifications.popups) == 0 && !revealsearch) || revealbar == 2}
             :transition "slideright"
-            (box
-              :orientation "v"
-              :space-evenly false
+            (stack 
               :width 950
-              (stack 
-                :selected {revealbar == 2 ? 0 : 1}
-                :transition "slideright"
-                (dashboard)
-                (centerbox 
-                  :valign "start"
-                  :width 950
-                  (left)
-                  (middle)
-                  (right))))))))))
+              :selected {revealbar == 2 ? 0 : 1}
+              :transition "slideright"
+              (dashboard)
+              (centerbox 
+                :valign "start"
+                :width 950
+                (left)
+                (middle)
+                (right)))))))))
 
 (defwidget left [] 
   (box 

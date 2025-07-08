@@ -1,0 +1,16 @@
+(deflisten notesc "./scripts/notesmd.py")
+
+(defwidget whiteboard [] 
+  (scroll 
+    :vscroll true
+    :vexpand true
+    :class "vscroll"
+    (box 
+      (label 
+        :style "margin: 10px;"
+        :valign "start"
+        :halign "start"
+        :xalign 0
+        :wrap true
+        :markup notesc))))
+

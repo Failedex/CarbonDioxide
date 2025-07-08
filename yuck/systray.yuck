@@ -20,3 +20,11 @@
         (systray
           :orientation "h"
           :icon-size 20))))) 
+
+(defwidget sstray [] 
+  (box 
+    :halign "center"
+    :class "widget"
+    (systray 
+      :orientation "h"
+      :icon-size 20)))

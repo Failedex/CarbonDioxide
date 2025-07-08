@@ -11,8 +11,9 @@
       :vexpand true
       (scroll
         :width 500
+        :height 40
         :hscroll true
-        :vscroll false
+        :vscroll true
         (box 
           :orientation "v"
           :space-evenly false

@@ -8,7 +8,7 @@
     (sideswitchslide)
     (calwidget)))
 
-(defvar selectedlog 2)
+(defvar selectedlog 3)
 (defvar lognames '["wifi", "bluetooth", "notifications"]')
 
 (defwidget sideswitch [] 
@@ -24,7 +24,10 @@
       :index 1)
     (sideswitchbutton 
       :icon "./assets/icons/bell.svg"
-      :index 2)))
+      :index 2)
+    (sideswitchbutton 
+      :icon "./assets/icons/file-text.svg"
+      :index 3)))
 
 (defvar updatedashval "
   ./scripts/bluetooth.sh --update_eww_json &
@@ -32,9 +35,9 @@
 
 (defwidget sideswitchslide []
   (eventbox
-    :onscroll "./scripts/switcher.sh {} 3 selectedlog & ${updatedashval}"
-    :onclick "./scripts/switcher.sh up 3 selectedlog & ${updatedashval}"
-    :onrightclick "./scripts/switcher.sh down 3 selectedlog & ${updatedashval}"
+    :onscroll "./scripts/switcher.sh {} 4 selectedlog & ${updatedashval}"
+    :onclick "./scripts/switcher.sh up 4 selectedlog & ${updatedashval}"
+    :onrightclick "./scripts/switcher.sh down 4 selectedlog & ${updatedashval}"
     :vexpand true
     :width 30
     (box 
@@ -45,8 +48,8 @@
         (box 
           :class "knob"
           :style "
-        margin-top: ${44 * selectedlog}px;
-        margin-bottom: ${44 * (2 - selectedlog)}px;
+        margin-top: ${32 * selectedlog}px;
+        margin-bottom: ${32 * (3 - selectedlog)}px;
         ")))))
     
 
@@ -81,11 +84,15 @@
         (image
           :style "margin-top: 5px;"
           :path "./assets/icons/bell.svg"
+          :image-width 25)
+        (image
+          :style "margin-top: 5px;"
+          :path "./assets/icons/file-text.svg"
           :image-width 25))
       (box 
         :vexpand true)
       (stack
-        :selected {selectedlog == 2 ? 0 : 1}
+        :selected {selectedlog == 2 ? 0 : selectedlog == 3 ? 2 : 1}
         :transition "slidedown"
         (logswitch
           ;; stupid parinfer moment
@@ -102,7 +109,14 @@
                     './scripts/network.sh --update_eww_json'}
           (image 
             :image-width 22
-            :path "./assets/icons/refresh-cw.svg"))))
+            :path "./assets/icons/refresh-cw.svg"))
+
+        (button 
+          :style "margin: 5px;"
+          :onclick "foot nvim ~/Documents/fuck.txt &"
+          (image 
+            :image-width 22
+            :path "./assets/icons/edit.svg"))))
           
     (box 
       :hexpand true
@@ -112,7 +126,8 @@
         :transition "slidedown"
         (wifilist)
         (bluetoothlist)
-        (notiflog)))))
+        (notiflog)
+        (whiteboard)))))
 
 (defwidget logswitch [cond toggle]
   (button

@@ -33,3 +33,4 @@
 (include "./yuck/dashboard.yuck")
 (include "./yuck/bluetooth.yuck")
 (include "./yuck/wifi.yuck")
+(include "./yuck/whiteboard.yuck")
