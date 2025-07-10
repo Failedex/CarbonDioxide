@@ -58,11 +58,13 @@ class NotificationDaemon(dbus.service.Object):
         bus_name = dbus.service.BusName("org.freedesktop.Notifications", dbus.SessionBus())
         dbus.service.Object.__init__(self, bus_name, "/org/freedesktop/Notifications")
         self.dnd = self.read_log_file()["dnd"]
+        current = self.read_log_file()
+        self.write_log_file(current)
 
     @dbus.service.method("org.freedesktop.Notifications", in_signature="susssasa{sv}i", out_signature="u")
     def Notify(self, app_name, replaces_id, app_icon, summary, body, actions, hints, expire_timeout):
-        command = "zsh /home/$(whoami)/.config/eww/scripts/notifClose  > /dev/null 2>&1 & "
-        subprocess.run(command, shell=True)
+        # command = "zsh /home/$(whoami)/.config/eww/scripts/notifClose  > /dev/null 2>&1 & "
+        # subprocess.run(command, shell=True)
 
         if int(replaces_id) != 0:
             id = int(replaces_id)
@@ -102,7 +104,7 @@ class NotificationDaemon(dbus.service.Object):
 
         self.save_notification(details)
         if not self.dnd:
-            self.save_popup(details)
+            self.save_popup(details, expire_timeout)
         return id
 
     @dbus.service.method("org.freedesktop.Notifications", in_signature="", out_signature="ssss")
@@ -186,12 +188,12 @@ class NotificationDaemon(dbus.service.Object):
 
         output_json = json.dumps(data)
         print (output_json, flush=True)
-        # subprocess.run(["eww", "-c", eww_dir, "update", f"notifications={output_json}"])
-
+        idslist = [element["id"] for element in data["notifications"]]
 
         with open(log_file, "w") as log:
             log.write(output_json)
-            
+
+        subprocess.run(["eww", "-c", eww_dir, "update", f"notificationanimmap={json.dumps(idslist)}"])
         
     def read_log_file(self):
         try:
@@ -226,7 +228,7 @@ class NotificationDaemon(dbus.service.Object):
         self.write_log_file(empty)
         
 
-    def save_popup(self, notification):
+    def save_popup(self, notification, expire_timeout=6):
         global active_popups
 
         current = self.read_log_file()
@@ -237,7 +239,9 @@ class NotificationDaemon(dbus.service.Object):
         current["popups"].insert(0, notification)
 
         popup_id = notification["id"]
-        active_popups[popup_id] = (GLib.timeout_add_seconds(6, self.DismissPopup, popup_id), datetime.datetime.now().timestamp()+6)
+        if expire_timeout <= 0:
+            expire_timeout = 6
+        active_popups[popup_id] = (GLib.timeout_add_seconds(expire_timeout, self.DismissPopup, popup_id), datetime.datetime.now().timestamp()+expire_timeout)
 
         self.write_log_file(current)
         
