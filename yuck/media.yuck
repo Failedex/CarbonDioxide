@@ -22,13 +22,10 @@
       (box 
         :orientation "h"
         :space-evenly false
-        (revealer
-          :reveal {!revealmediactl}
-          :transition "slideleft"
-          (label 
-            :truncate true 
-            :style "margin: 0 5px;"
-            :text {playerctl.song ?: "..."}))
+        (label 
+          :truncate true 
+          :style "margin: 0 5px;"
+          :text {playerctl.song ?: "..."})
         (revealer
           :reveal revealmediactl
           :transition "slideright"

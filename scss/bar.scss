@@ -15,28 +15,42 @@
   }
 }
 
-.batscale {
-  all: unset;
-  trough {
-    min-width: 60px;
-    min-height: 20px;
-    border-radius: $round - $padding;
-    background-color: $surface1;
+.batknob {
+  margin-right: -1px;
+  border-top-left-radius: $round;
+  border-bottom-left-radius: $round;
+  background-color: $surface2;
+  min-height: 10px;
+  min-width: 4px;
+}
 
-    highlight {
-      background-color: $accent;
+.batwrap {
+  border: solid 1px $surface2;
+  border-radius: $round;
+  padding: 3px;
+  .batscale {
+    all: unset;
+    trough {
+      min-width: 40px;
+      min-height: 12px;
       border-radius: $round - $padding;
+      background-color: $surface1;
+
+      highlight {
+        background-color: $accent;
+        border-radius: $round - $padding;
+      }
     }
-  }
-  &.charging trough highlight {
-    background-color: $green;
+    &.charging trough highlight {
+      background-color: $green;
+    }
   }
 }
 
 .wscirc {
   transition: 500ms;
   border-radius: 100px;
-  border: solid 1px $surface1;
+  border: solid 1px $surface2;
   min-width: 18px;
   min-height: 18px;
 }

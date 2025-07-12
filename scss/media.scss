@@ -1,4 +1,16 @@
 
+@keyframes scrolltext {
+  0% {
+    margin-left: 0px;
+  }
+  20% {
+    margin-left: 0px;
+  }
+  100% {
+    margin-left: -100px;
+  }
+}
+
 .coverpill {
   transition: 500ms;
   margin: $margin;

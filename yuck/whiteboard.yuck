@@ -7,7 +7,7 @@
     :class "vscroll"
     (box 
       (label 
-        :style "margin: 10px;"
+        :style "margin: 10px; margin-right: 15px;"
         :valign "start"
         :halign "start"
         :xalign 0

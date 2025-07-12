@@ -3,11 +3,18 @@
   (box 
     :class "widget"
     :tooltip "${bat0}%"
-    (scale 
-      :orientation "h"
-      :active false 
-      :min 0 
-      :max 100 
-      :value bat0 
-      :flipped true
-      :class "batscale ${EWW_BATTERY.BAT0.status == 'Charging' ? 'charging' : ''}")))
+    :orientation "h"
+    :space-evenly false
+    (box 
+      :valign "center"
+      :class "batknob")
+    (box
+      :class "batwrap"
+      (scale 
+        :orientation "h"
+        :active false 
+        :min 0 
+        :max 100 
+        :value bat0 
+        :flipped true
+        :class "batscale ${EWW_BATTERY.BAT0.status == 'Charging' ? 'charging' : ''}"))))
