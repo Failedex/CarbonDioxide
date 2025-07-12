@@ -1,5 +1,5 @@
 
-(deflisten ricon :initial 0 "./scripts/ricon.py")
+(defvar ricon 0)
 (defvar revealsearch false)
 (defvar revealbar 1)
 (defvar overview false)
@@ -45,7 +45,7 @@
           :min 0
           :max 3
           :value revealbar
-          :onchange "${EWW_CMD} update revealbar={} && bash -c '[ {} == 2 ] && ./scripts/ricon.py mode 3 || ./scripts/ricon.py mode 0'"))) 
+          :onchange "${EWW_CMD} update revealbar={} && bash -c '[ {} != 2 ] && ${EWW_CMD} update ricon=0'"))) 
     (box 
       :valign "end"
       :halign "center"

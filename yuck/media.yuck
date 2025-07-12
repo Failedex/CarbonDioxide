@@ -1,5 +1,5 @@
 
-(deflisten pcover "./scripts/pollcover.sh")
+(deflisten pcover "./scripts/pollcover.py")
 (deflisten playerctl :initial '{"song": "", "artist": "", "status": "Stopped", "source": ""}' "playerctl metadata --format '{\"song\": \"{{title}}\",\"artist\": \"{{artist}}\", \"status\": \"{{status}}\", \"source\": \"{{playerName}}\"}' -F")
 (defvar revealmediactl false)
 

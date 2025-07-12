@@ -59,43 +59,44 @@
         :style "transition: 600ms; 
                ${revealbar == 2 ? 'border-radius: 50%; padding: 10px;' : ''}"
         (eventbox
-          :onclick "./scripts/ricon.py mode ${revealbar == 2 ? 0 : 3} & ${EWW_CMD} update revealbar=${revealbar == 1 ? 2 : 1} &"
-          (transform
-            :transform-origin-x "50%"
-            :transform-origin-y "50%"
-            :rotate {ricon}
-            (box 
-              :class "ricon ${revealbar == 2 ? 'discmode' : 'normal'}"
+          :onclick "${EWW_CMD} update revealbar=${revealbar == 1 ? 2 : 1} ${revealbar == 2 ? 'ricon=0' : ''}"
+          (overlay
+            (image
+              :class "ricon ${revealbar == 2 || riconmode == 2 ? 'discmode' : 'normal'}"
+              :path {revealbar == 2 ? pcover : './assets/void.svg'}
+              :image-width {revealbar == 2 ? 130 : 20}
+              :image-height {revealbar == 2 ? 130 : 20}
               :style "
-              min-height: ${revealbar == 2 ? 130 : 20}px;
-              min-width: ${revealbar == 2 ? 130 : 20}px;
-              background-image: url(\"${revealbar == 2 ? pcover : './assets/void.svg'}\");
-              "
-              (box 
-                :halign "center"
-                :valign "center"
-                :class "cdisc"
-                :style "
+                animation-play-state: ${playerctl.status == 'Playing' ? 'running' : 'paused'};
+                -gtk-icon-transform: rotate(${ricon}deg);
+                animation-duration: ${(-24 / 19) * speenspeed + 25 + (24 / 19) }s;
+                ")
+
+            (box 
+              :halign "center"
+              :valign "center"
+              :class "cdisc"
+              :style "
                 min-height: ${revealbar == 2 ? 40 : 0}px;
                 min-width: ${revealbar == 2 ? 40 : 0}px;
                 opacity: ${revealbar == 2 ? 1 : 0};
                 "
-                (box 
-                  :halign "center"
-                  :valign "center"
-                  :class "ccdisc"
-                  :style "
+              (box 
+                :halign "center"
+                :valign "center"
+                :class "ccdisc"
+                :style "
                   min-height: ${revealbar == 2 ? 10 : 0}px;
                   min-width: ${revealbar == 2 ? 10 : 0}px;
                   opacity: ${revealbar == 2 ? 1 : 0};
-                ")))))
+                "))))
         (scroll 
           :hscroll true
           :style "
-          transition: 600ms;
+          transition: 500ms;
           min-width: ${revealsearch ? 160 : 0}px;"
           (input
-            :onchange "./scripts/apps.py --query '{}' & ./scripts/ricon.py type \"{}\" &"
+            :onchange "./scripts/apps.py --query '{}' & ${EWW_CMD} update ricon=$(expr length \"{}\" \\* 10 + 360) &"
             :onaccept "
             ${ arraylength(appsjson.apps) > 0 ? "(cd && ${appsjson.apps[0].desktop}) & ./scripts/apps.py --increase '${appsjson.apps[0].name}' &" : ''}
             ./bin/launcher.sh close &"
@@ -103,7 +104,7 @@
       (scroll 
         :hscroll true 
         :hexpand true 
-        :style "transition: 600ms; opacity: ${revealsearch ? 1 : 0};"
+        :style "transition: 500ms; opacity: ${revealsearch ? 1 : 0};"
         (box
           :orientation "h"
           :space-evenly false

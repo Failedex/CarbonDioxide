@@ -9,12 +9,12 @@
     :halign "center"
     (riconmode 
       :ind 0
-      :onclick "./scripts/ricon.py mode 0"
+      :onclick "${EWW_CMD} update ricon=0"
       :text "Normal"
       :icon "./assets/icons/slash.svg")
     (riconmode 
       :ind 1 
-      :onclick "./scripts/ricon.py mode 1"
+      :onclick "notify-send 'coming soon'"
       :text "Music"
       :icon "./assets/icons/disc.svg"
       :tooltip "Icon spins based on music intensity")
@@ -24,7 +24,7 @@
       :space-evenly false
       :tooltip "Icon spins at a constant rate"
       (button 
-        :onclick "${EWW_CMD} update riconmode=2 & ./scripts/ricon.py mode 2"
+        :onclick "${EWW_CMD} update riconmode=2"
         (box
           :orientation "h"
           :space-evenly false 
@@ -41,7 +41,7 @@
           :orientation "h"
           :space-evenly false
           (button 
-            :onclick "${EWW_CMD} update speenspeed=${min(max(speenspeed - 1, 0), 100)} & ./scripts/ricon.py dec 1"
+            :onclick "${EWW_CMD} update speenspeed=${min(max(speenspeed - 1, 0), 20)}"
             (image
               :image-width 20
               :path "./assets/icons/minus.svg"))
@@ -49,7 +49,7 @@
             :style "margin: 0 5px;"
             :text {speenspeed})
           (button 
-            :onclick "${EWW_CMD} update speenspeed=${min(max(speenspeed + 1, 0), 100)} & ./scripts/ricon.py inc 1"
+            :onclick "${EWW_CMD} update speenspeed=${min(max(speenspeed + 1, 0), 20)}"
             (image
               :image-width 20
               :path "./assets/icons/plus.svg")))))))

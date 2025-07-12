@@ -110,9 +110,10 @@ class RIcon(dbus.service.Object):
         if self.mode != 0: 
             return
         self.target = r
-        self.anim_id += 1
-        thd = Thread(target=self.update)
-        thd.start()
+        self.rotate = r
+        # self.anim_id += 1
+        # thd = Thread(target=self.update)
+        # thd.start()
 
     @dbus.service.method("com.Failed.RIcon", in_signature="i", out_signature="")
     def SetMode(self, mode): 

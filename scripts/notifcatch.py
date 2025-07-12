@@ -182,9 +182,9 @@ class NotificationDaemon(dbus.service.Object):
         #         p["tleft"] = 0
 
         if len(data["popups"]) >= 1: 
-            subprocess.run(["./scripts/ricon.py", "100"])
+            subprocess.run(["eww", "-c", eww_dir, "update", "ricon=360"])
         else:
-            subprocess.run(["./scripts/ricon.py", "0"])
+            subprocess.run(["eww", "-c", eww_dir, "update", "ricon=0"])
 
         output_json = json.dumps(data)
         print (output_json, flush=True)
