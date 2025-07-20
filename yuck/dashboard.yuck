@@ -1,12 +1,17 @@
 (defwidget dashboard [] 
-  (box 
-    :height 160
-    :orientation "h"
-    :space-evenly false 
-    (mediadiscside)
-    (switchablelog)
-    (sideswitchslide)
-    (calwidget)))
+  (scroll
+    :class "cubictransition"
+    :style "min-width: ${revealbar == 2 ? 160 : 40}px;"
+    :vscroll true
+    :hscroll false
+    (box 
+      :height 160
+      :orientation "h"
+      :space-evenly false 
+      (mediadiscside)
+      (switchablelog)
+      (sideswitchslide)
+      (calwidget))))
 
 (defvar selectedlog 3)
 (defvar lognames '["wifi", "bluetooth", "notifications"]')
@@ -14,6 +19,7 @@
 (defwidget sideswitch [] 
   (box 
     :orientation "v"
+    :space-evenly false
     (sideswitchbutton 
       :icon "./assets/icons/wifi.svg"
       :onclick "./scripts/network.sh --update_eww_json"
@@ -29,12 +35,25 @@
       :icon "./assets/icons/file-text.svg"
       :index 3)))
 
+(defwidget sideswitchbutton [icon index ?onclick]
+  (button 
+    :class "widget cubictransition"
+    :style "min-width: 30px; min-height: ${ selectedlog == index ? 30 : 16 }px;"
+    :onclick "${EWW_CMD} update selectedlog=${index} ${onclick != '' ? '&&' + onclick : ''}"
+    (scroll
+      :active false
+      (image 
+        :style "opacity: ${selectedlog == index ? 1 : 0};"
+        :image-width 25
+        :path icon)))) 
+
 (defvar updatedashval "
   ./scripts/bluetooth.sh --update_eww_json &
   ./scripts/network.sh --update_eww_json &")
 
 (defwidget sideswitchslide []
   (eventbox
+    :cursor "all-scroll"
     :onscroll "./scripts/switcher.sh {} 4 selectedlog & ${updatedashval}"
     :onclick "./scripts/switcher.sh up 4 selectedlog & ${updatedashval}"
     :onrightclick "./scripts/switcher.sh down 4 selectedlog & ${updatedashval}"
@@ -53,18 +72,10 @@
         ")))))
     
 
-(defwidget sideswitchbutton [icon index ?onclick]
-  (button 
-    :class "widget maxr"
-    :onclick "${EWW_CMD} update selectedlog=${index} ${onclick != '' ? '&&' + onclick : ''}"
-    (image 
-      :image-width 32
-      :path icon))) 
-
 (defwidget switchablelog [] 
   (box 
     :class "switchablelog"
-    :hexpand true
+    :width 402
     :orientation "h"
     :space-evenly false
     (box 
@@ -101,22 +112,26 @@
                     selectedlog == 2 ? 
                     "./scripts/notifmanage.sh --toggle" : 
                     ''})
-        (button 
-          :style "margin: 5px;"
+        (eventbox 
+          :cursor "pointer"
           :onclick {
                     selectedlog == 1 ? 
                     './scripts/bluetooth.sh --update_eww_json' :
                     './scripts/network.sh --update_eww_json'}
-          (image 
-            :image-width 22
-            :path "./assets/icons/refresh-cw.svg"))
+          (box
+            :style "margin: 5px;"
+            (image 
+              :image-width 22
+              :path "./assets/icons/refresh-cw.svg")))
 
-        (button 
-          :style "margin: 5px;"
+        (eventbox 
+          :cursor "pointer"
           :onclick "foot nvim ~/Documents/fuck.txt &"
-          (image 
-            :image-width 22
-            :path "./assets/icons/edit.svg"))))
+          (box
+            :style "margin: 5px;"
+            (image 
+              :image-width 22
+              :path "./assets/icons/edit.svg")))))
           
     (box 
       :hexpand true
@@ -130,7 +145,8 @@
         (whiteboard)))))
 
 (defwidget logswitch [cond toggle]
-  (button
+  (eventbox
+    :cursor "pointer"
     :onclick toggle
     (box 
       :class "toggleswitch"

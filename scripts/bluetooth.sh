@@ -56,11 +56,12 @@ update_eww_json() {
     for mac in $macs; do 
         info=$(bluetoothctl info "$mac")
 
-        # Only return paired
         paired=$(echo "$info" | awk -F': ' '/Paired/ {print $2}')
-        if [[ "$paired" != "yes" ]]; then 
-            continue
-        fi
+
+        # Only return paired 
+        # if [[ "$paired" != "yes" ]]; then 
+        #     continue
+        # fi
 
         name=$(echo "$info" | awk -F': ' '/Name/ {print $2}')
         connected=$(echo "$info" | awk -F': ' '/Connected/ {print $2}')
@@ -77,6 +78,7 @@ update_eww_json() {
 {
   "mac": "$mac",
   "name": "$name_escaped",
+  "paired": "$paired",
   "connected": "$connected",
   "trusted": "$trusted"
 }

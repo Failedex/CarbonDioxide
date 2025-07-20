@@ -10,7 +10,7 @@
       :onscroll "./scripts/switcher.sh {} 4 switcherind"
       :vexpand true
       (scroll
-        :width 500
+        :width {barwidth - 500}
         :height 40
         :hscroll true
         :vscroll true
@@ -55,3 +55,30 @@
           :style "
           margin-left: ${round(30 / 3, 0) * switcherind}px;
           margin-right: ${round(30 / 3, 0) * (3 - switcherind)}px;")))))
+
+(defvar switchericons '["compass", "disc", "aperture", "refresh-cw"]')
+
+(defwidget sposcirc [] 
+  (eventbox
+    :cursor "pointer"
+    :onscroll "./scripts/switcher.sh {} 4 switcherind"
+    :onclick "./scripts/switcher.sh down 4 switcherind"
+    :onrightclick "./scripts/switcher.sh up 4 switcherind"
+    (box
+      :class "widget"
+      :orientation "h"
+      :space-evenly false
+      :style "padding: 3px;"
+      (overlay
+        (image
+          :path "./assets/icons/quarterbase.svg"
+          :image-height 24)
+        (image
+          :class "cubictransition"
+          :style "-gtk-icon-transform: rotate(${switcherind * 90}deg);"
+          :path "./assets/icons/quarterarc.svg"
+          :image-height 24)
+        (image 
+          :path "./assets/icons/${switchericons[switcherind]}.svg"
+          :image-height 20)))))
+        

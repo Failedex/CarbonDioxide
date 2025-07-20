@@ -13,7 +13,7 @@
       :hscroll true 
       :hexpand true
       :height 40
-      :width 500
+      :width {barwidth - 500}
       (taskslides))))
       
     ; (label 

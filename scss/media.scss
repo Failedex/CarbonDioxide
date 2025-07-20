@@ -1,16 +1,4 @@
 
-@keyframes scrolltext {
-  0% {
-    margin-left: 0px;
-  }
-  20% {
-    margin-left: 0px;
-  }
-  100% {
-    margin-left: -100px;
-  }
-}
-
 .coverpill {
   transition: 500ms;
   margin: $margin;
@@ -48,8 +36,21 @@
 }
 
 .mline {
-  @extend .widget;
-  margin: 2*$margin;
-  padding: 0px;
-  background-color: $white0;
+  trough {
+    @extend .widget;
+    min-width: 40px;
+    min-height: 5px;
+    margin: 2*$margin;
+    padding: 0px;
+    background-color: $surface2;
+    highlight {
+      background-color: $white0;
+      border-radius: $round;
+    }
+    slider {
+      min-width: 5px;
+      min-height: 5px;
+      margin: -10px;
+    }
+  }
 }

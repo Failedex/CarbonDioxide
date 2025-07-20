@@ -24,19 +24,57 @@
           (bluetoothdev 
             :dev device))))))
 
+(defvar bluetoothsel '')
+
 ;; I made this only show paired devices btw
 (defwidget bluetoothdev [dev]
-  (box 
+  (box
     :class "widget"
-    :orientation "h"
+    :orientation "v"
     :space-evenly false
-    (box 
-      :class "connectionstat ${dev.connected}")
-    (label 
-      :hexpand true
-      :truncate true
-      :markup "${dev.name}")
-    (button 
-      :onclick "bluetoothctl ${dev.connected == 'yes' ? 'disconnect' : 'connect'} ${dev.mac}"
+    (eventbox
+      :cursor "pointer"
+      :onclick "${EWW_CMD} update bluetoothsel='${bluetoothsel == dev.mac ? '' : dev.mac}'"
       (box 
-        :class "connbutton ${dev.connected}"))))
+        :orientation "h"
+        :space-evenly false
+        (box 
+          :class "connectionstat ${dev.connected}")
+        (label 
+          :hexpand true
+          :truncate true
+          :markup "${dev.name}")
+        (image 
+          :image-height 20
+          :class "cubictransition"
+          :style "-gtk-icon-transform: rotate(${bluetoothsel == dev.mac ? 90 : -90}deg);"
+          :path "./assets/icons/chevron-left.svg")))
+        ; (box 
+        ;   :class "connbutton ${dev.connected}"))))
+    (revealer 
+      :reveal {bluetoothsel == dev.mac}
+      :transition "slidedown"
+      (box 
+        :orientation "h"
+        :space-evenly false
+        (label 
+          :valign "center"
+          :style "margin: 5px 10px;"
+          ; :text {dev.mac})
+          :text "1F-1E-33-1F-1E-33")
+        (box 
+          :hexpand true)
+        (eventbox 
+          :cursor "pointer"
+          :onclick "bluetoothctl ${dev.trusted == 'yes' ? 'untrust' : 'trust'} ${dev.mac} && ./scripts/bluetooth.sh --update_eww_json &"
+          (box
+            :class "connctl"
+            (label 
+              :text {dev.trusted == 'yes' ? 'Untrust' : 'Trust'})))
+        (eventbox 
+          :cursor "pointer"
+          :onclick "bluetoothctl ${dev.connected == 'yes' ? 'disconnect' : 'connect'} ${dev.mac} && ./scripts/bluetooth.sh --update_eww_json &"
+          (box
+            :class "connctl"
+            (label 
+              :text {dev.connected == 'yes' ? 'Disconnect' : 'Connect'})))))))

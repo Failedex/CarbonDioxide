@@ -44,7 +44,7 @@
 (defwidget workspace_ind [idx]
   (scroll
     :class "cubictransition"
-    :style "min-width: ${arraylength(workspace[idx]) * 25 + 10}px;"
+    :style "min-width: ${arraylength(workspace[idx]) * 25 + 15}px;"
     (box 
       :class "widget"
       (box

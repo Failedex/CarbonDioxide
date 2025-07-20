@@ -2,6 +2,7 @@
 (deflisten pcover "./scripts/pollcover.sh")
 (deflisten playerctl :initial '{"song": "", "artist": "", "status": "Stopped", "source": ""}' "playerctl metadata --format '{\"song\": \"{{title}}\",\"artist\": \"{{artist}}\", \"status\": \"{{status}}\", \"source\": \"{{playerName}}\"}' -F")
 (defvar revealmediactl false)
+(deflisten pposition :initial '{"position": 0, "duration": 100, "display": "--/--"}' "playerctl metadata -f '{\"position\": {{position / 1000000}}, \"duration\": {{mpris:length / 1000000}}, \"display\": \"{{duration(position)}}/{{duration(mpris:length)}}\"}' -F")
 
 (defwidget mediapill [] 
   (eventbox
@@ -32,17 +33,20 @@
           (box
             :orientation "h"
             :spacing 5
-            (button 
+            (eventbox
+              :cursor "pointer"
               :onclick "playerctl previous"
               (image 
                 :image-width 20
                 :path "./assets/icons/skip-back.svg"))
-            (button 
+            (eventbox
+              :cursor "pointer"
               :onclick "playerctl play-pause"
               (image 
                 :image-width 20
                 :path "./assets/icons/${playerctl.status == 'Playing' ? 'pause' : 'play'}.svg"))
-            (button 
+            (eventbox
+              :cursor "pointer"
               :onclick "playerctl next"
               (image 
                 :image-width 20
@@ -55,7 +59,7 @@
     (box 
       :class "coverpill"
       :orientation "h"
-      :space-evely false 
+      :space-evenly false 
       :height 40
       :halign "center"
       :style {pcover ? "background-image: url(\"${pcover}\");" : ""})))
@@ -72,9 +76,23 @@
     (mlabel 
       :icon "./assets/icons/user.svg"
       :markup "${playerctl.artist == '' ? 'Unknown artist' : playerctl.artist}")
-    (box 
+    ; (box
+    ;   :orientation "h"
+    ;   :vexpand true
+    ;   :hexpand true
+    ;   :space-evenly false)
+    (scale 
+      :orientation "h"
       :class "mline"
-      :vexpand true)
+      :vexpand true
+      :hexpand true
+      :value {pposition.position}
+      :min 0 
+      :max {pposition.duration}
+      :tooltip {pposition.display})
+      ; :onchange "playerctl position {}")
+      ; (label 
+      ;   :text {pposition.display}))
     (box 
       :orientation "h"
       :space-evenly false
@@ -86,17 +104,20 @@
         :orientation "h"
         :height 45
         :width 100
-        (button 
+        (eventbox
+          :cursor "pointer"
           :onclick "playerctl previous"
           (image 
             :image-width 20
             :path "./assets/icons/skip-back.svg"))
-        (button 
+        (eventbox
+          :cursor "pointer"
           :onclick "playerctl play-pause"
           (image 
             :image-width 20
             :path "./assets/icons/${playerctl.status == 'Playing' ? 'pause' : 'play'}.svg"))
-        (button 
+        (eventbox
+          :cursor "pointer"
           :onclick "playerctl next"
           (image 
             :image-width 20
