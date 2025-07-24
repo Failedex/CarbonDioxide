@@ -32,7 +32,7 @@
       :orientation "h"
       :space-evenly false
       :class "widget"
-      :width 950 
+      :width {barwidth - 50} 
       (box
         :class "notifimg"
         :visible {noti.image != "null"}
@@ -74,12 +74,14 @@
             :space-evenly false
             :spacing 10
             (for action in {noti.actions}
-              (button 
+              (eventbox
+                :cursor "pointer"
                 :onclick "./scripts/notifmanage.sh --action ${noti.id} ${action[0]} 
                          && ./scripts/notifmanage.sh --close ${noti.id}"
                 (label 
                   :text {action[1]}))))
-          (button 
+          (eventbox 
+            :cursor "pointer"
             :onclick "./scripts/notifmanage.sh --close ${noti.id} && ${EWW_CMD} update revealnotiactions=false"
             (label 
               :text "Close")))))))
@@ -148,12 +150,14 @@
               :hexpand true 
               :xalign 0 
               :markup "<span weight='bold'>${noti.summary}</span>"))
-          (button 
-            :timeout "2s"
-            :onclick "${EWW_CMD} update notificationanimmap=${jq(notificationanimmap, 'del(.[] | select(.==${noti.id}))')} && sleep 0.5 && ./scripts/notifmanage.sh --close ${noti.id}"
-            (image
-              :path "./assets/icons/x.svg"
-              :image-width 25)))
+          (eventbox 
+            :cursor "pointer"
+            (button
+              :timeout "2s"
+              :onclick "${EWW_CMD} update notificationanimmap=${jq(notificationanimmap, 'del(.[] | select(.==${noti.id}))')} && sleep 0.5 && ./scripts/notifmanage.sh --close ${noti.id}"
+              (image
+                :path "./assets/icons/x.svg"
+                :image-width 25))))
         (scroll 
           :hexpand true 
           :hscroll true 
@@ -165,14 +169,17 @@
           :orientation "h"
           :style "margin-top: 5px;"
           (for action in {noti.actions}
-            (button 
-              :onclick "./scripts/notifmanage.sh --action ${noti.id} ${action[0]} && ./scripts/notifmanage.sh --close ${noti.id}"
+            (eventbox
+              :cursor "pointer"
+              :timeout "2s"
+              :onclick "./scripts/notifmanage.sh --action ${noti.id} ${action[0]} && ${EWW_CMD} update notificationanimmap=${jq(notificationanimmap, 'del(.[] | select(.==${noti.id}))')} && sleep 0.5 && ./scripts/notifmanage.sh --close ${noti.id}"
               :hexpand true 
-              ; :class "widget"
-              (scroll 
-                :hexpand true 
-                :hscroll true 
-                :vscroll false 
-                (label 
-                  :text {action[1]})))))))))
+              (box 
+                ; :class "widget"
+                (scroll 
+                  :hexpand true 
+                  :hscroll true 
+                  :vscroll false 
+                  (label 
+                    :text {action[1]}))))))))))
       

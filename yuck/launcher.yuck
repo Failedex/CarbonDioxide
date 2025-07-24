@@ -26,7 +26,7 @@
       :transition "slideright"
       (centerbox 
         :valign "start"
-        :width 950
+        :width {barwidth - 50}
         (left)
         (middle)
         (right)))))
@@ -46,7 +46,7 @@
         :reveal revealsearch
         :transition "slideright"
         (box 
-          :width 950)))
+          :width {barwidth -50})))
     (box 
       :orientation "h"
       :space-evenly false

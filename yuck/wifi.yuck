@@ -35,7 +35,8 @@
       :hexpand true 
       :truncate true
       :text {network.ssid})
-    (button 
+    (eventbox 
+      :cursor "pointer"
       :onclick "nmcli con ${network.connected ? 'down' : 'up'} ${network.ssid}"
       (box 
         :class "connbutton ${network.connected ? 'yes' : 'no'}"))))

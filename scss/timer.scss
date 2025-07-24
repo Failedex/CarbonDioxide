@@ -1,6 +1,6 @@
 .scaleborder {
   border-radius: 100px;
-  border: solid 1px $surface1;
+  border: solid 1px $surface2;
   padding: 3px;
   min-width: 12px;
   min-height: 12px;
@@ -17,5 +17,23 @@
       background-color: $accent;
       border-radius: $round;
     }
+  }
+}
+
+.animatescale {
+  trough highlight {
+    background-image: linear-gradient(to right, $accent 5%, white 10%, $accent 30%, $accent);
+    background-repeat: repeat-x;
+    background-size: 300px 12px;
+    animation: scaleanimate 4s linear infinite reverse;
+  }
+}
+
+@keyframes scaleanimate { 
+  0% {
+    background-position: 0px center;
+  }
+  100% {
+    background-position: 300px center;
   }
 }

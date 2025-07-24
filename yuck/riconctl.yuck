@@ -55,11 +55,12 @@
               :path "./assets/icons/plus.svg")))))))
 
 (defwidget riconmode [ind icon text onclick ?tooltip]
-  (button 
+  (eventbox 
+    :cursor "pointer"
     :tooltip tooltip
-    :class "widget ${riconmode == ind ? '' : 'trans'}"
     :onclick "${EWW_CMD} update riconmode=${ind} & ${ onclick}"
     (box
+      :class "widget ${riconmode == ind ? '' : 'trans'}"
       :orientation "h"
       :space-evenly false 
       (image 

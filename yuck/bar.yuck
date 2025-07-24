@@ -4,12 +4,13 @@
 (defvar revealbar 1)
 (defvar overview false)
 (defvar bshover false)
+(defvar barwidth 1200)
 
 (defwindow bar 
   :geometry (geometry 
               :x "0%"
               :y "0%"
-              :width 1000
+              :width 500
               :height 0
               :anchor "top center")
               
@@ -29,7 +30,8 @@
         :height 30)
       (box 
         :class "customslide"
-        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : revealbar == 3 ? 864 : 40}px; min-width: ${revealbar == 2 ? 1126 : revealbar == 3 ? 1536 : 1006}px;"))
+        ; :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : revealbar == 3 ? 864 : 40}px; min-width: ${revealbar == 2 ? 1126 : revealbar == 3 ? 1536 : barwidth + 6}px;"
+        :style "min-height: ${revealbar == 0 || overview ? 0 : revealbar == 2 ? 160 : revealbar == 3 ? 864 : 40}px; min-width: ${max(barwidth + 6, 1126)}px;"))
     (eventbox
       :onhover "${EWW_CMD} update bshover=true"
       :onhoverlost "${EWW_CMD} update bshover=false"
@@ -64,7 +66,7 @@
 (defwidget barstruct []
   (box
     :class "boxborder"
-    :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : revealbar == 2 ? "padding: 1px; padding-top: 0px; border-radius: 16px;" : "padding: 0px; padding-top: 0px;"}
+    :style {arraylength(notifications.popups) > 0 ? "animation: gradanim 2s linear infinite; padding: 3px; padding-top: 0px;" : revealbar == 2 ? "padding: 1px; padding-top: 0px; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;" : "padding: 0px; padding-top: 0px;"}
     :halign "center"
     :valign "start"
     (box
@@ -85,17 +87,22 @@
           (revealer 
             :reveal {(arraylength(notifications.popups) == 0 && !revealsearch) || revealbar == 2}
             :transition "slideright"
-            (stack 
-              :width 950
-              :selected {revealbar == 2 ? 0 : 1}
-              :transition "slideright"
-              (dashboard)
-              (centerbox 
-                :valign "start"
-                :width 950
-                (left)
-                (middle)
-                (right)))))))))
+            (box
+              :orientation "h"
+              :space-evenly false
+              (revealer
+                :reveal {revealbar == 2}
+                :transition "slideright"
+                (dashboard))
+              (revealer
+                :reveal {revealbar != 2}
+                :transition "slideleft"
+                (centerbox 
+                  :valign "start"
+                  :width {barwidth - 50}
+                  (left)
+                  (middle)
+                  (right))))))))))
 
 (defwidget left [] 
   (box 
@@ -103,7 +110,7 @@
     :space-evenly false
     :halign "start"
     (workspace)
-    (spos)))
+    (sposcirc)))
     ; (keepopen)))
 
 (defwidget middle [] 
