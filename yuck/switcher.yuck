@@ -61,9 +61,9 @@
 (defwidget sposcirc [] 
   (eventbox
     :cursor "pointer"
-    :onscroll "./scripts/switcher.sh {} 4 switcherind"
-    :onclick "./scripts/switcher.sh down 4 switcherind"
-    :onrightclick "./scripts/switcher.sh up 4 switcherind"
+    :onscroll "./scripts/switcher.sh {} 3 switcherind"
+    :onclick "./scripts/switcher.sh down 3 switcherind"
+    :onrightclick "./scripts/switcher.sh up 3 switcherind"
     (box
       :class "widget"
       :orientation "h"

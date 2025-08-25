@@ -59,9 +59,18 @@
         :style "transition: 600ms; 
                ${revealbar == 2 ? 'border-radius: 50%; padding: 10px;' : ''}"
         (eventbox
+          :cursor "pointer"
           :onclick "${EWW_CMD} update revealbar=${revealbar == 1 ? 2 : 1} ${revealbar == 2 ? 'ricon=0' : ''}"
           (overlay
+            (box 
+              :class "cubictransition"
+              :style "
+              min-width: ${revealbar == 2 ? 130 : 20}px;
+              min-height: ${revealbar == 2 ? 130 : 20}px;
+              ")
             (image
+              :halign "center"
+              :valign "center"
               :class "ricon ${revealbar == 2 || riconmode == 2 ? 'discmode' : 'normal'}"
               :path {revealbar == 2 ? pcover : './assets/void.svg'}
               :image-width {revealbar == 2 ? 130 : 20}
