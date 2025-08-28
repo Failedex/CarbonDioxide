@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Taken from Tail-R
+# Some modifications were made
 
 ewwPath=$(pwd)
 

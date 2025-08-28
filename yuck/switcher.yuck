@@ -7,7 +7,7 @@
     :reveal {!revealosd}
     :transition "slidedown"
     (eventbox
-      :onscroll "./scripts/switcher.sh {} 4 switcherind"
+      :onscroll "./scripts/switcher.sh {} 3 switcherind"
       :vexpand true
       (scroll
         :width {barwidth - 500}
