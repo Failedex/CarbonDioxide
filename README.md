@@ -2,17 +2,14 @@
 
 The totally unnecessary sequel to Carbon Monoxide!
 
+https://github.com/user-attachments/assets/103dc554-6a2d-455e-8957-58c3b6deeef0
+
 > [!NOTE]
 > Despite popular beliefs, Carbon Dioxide is a niri rice, not a swayfx rice.
 
-## What's in this config?
-- An eww config of a single bar.
-- A `bin` dir of scripts used to interact with the bar
-- An example `niri` config that uses the config 
-
 ## Quirks
 - The config is centered around a single bar! The bar includes an app launcher, notifications, timer, media player, volume and brightness osd, and can transform into a dashboard with more features.
-- This may be the first ever eww config to utilize `-gtk-icon-transform`, it was mainly used for adding transitions to icon rotation.
+- This may be the first ever eww config to utilize `-gtk-icon-transform`, which was mainly used for adding transitions to icon rotation.
 - Custom animations were said to be impossible in gtk due to its limitations on revealers. This is true. However, the config bypasses this restriction by using css transitions instead.
 
 A copius amount of tricks and ideas went into this config, I hope you have fun looking through it.
