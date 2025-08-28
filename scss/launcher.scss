@@ -22,8 +22,8 @@ entry {
 }
 
 .ricon {
-  transition: 0.6s;
-  transition-timing-function: $canim;
+  transition: 1s;
+  // transition-timing-function: $canim;
   border-radius: 50%;
   animation-fill-mode: none;
   &.discmode {

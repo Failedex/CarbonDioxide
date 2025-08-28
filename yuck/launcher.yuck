@@ -105,7 +105,7 @@
           transition: 500ms;
           min-width: ${revealsearch ? 160 : 0}px;"
           (input
-            :onchange "./scripts/apps.py --query '{}' & ${EWW_CMD} update ricon=$(expr length \"{}\" \\* 10 + 360) &"
+            :onchange "./scripts/apps.py --query '{}' & ${EWW_CMD} update ricon=$(expr length \"{}\" \\* 40 + 360) &"
             :onaccept "
             ${ arraylength(appsjson.apps) > 0 ? "(cd && ${appsjson.apps[0].desktop}) & ./scripts/apps.py --increase '${appsjson.apps[0].name}' &" : ''}
             ./bin/launcher.sh close &"
